@@ -64,6 +64,22 @@ HIV_i = alpha + beta_1 × STI_i + beta_2 × W·STI_i + epsilon_i
 
 where W·STI_i is the spatially lagged STI incidence (weighted average of neighbouring districts' STI values). The model was estimated by OLS using statsmodels. Results: R² = 0.684, adjusted R² = 0.677. STI coefficient beta_1 = 0.0482 (p < 0.001).
 
+### S11. Conceptual DAG
+
+Figure S11 (`figures/fig0_conceptual_dag.svg`) presents the directed acyclic graph (DAG) encoding the causal assumptions underpinning this analysis at the district ecological level.
+
+**Upstream determinants** (district poverty index, adult literacy rate) are assumed to act on all three behavioural mediators: higher-risk sex behaviour (positive effect of poverty; negative effect of literacy), condom use (negative effect of poverty; positive effect of literacy), and VCT knowledge/testing uptake (negative effect of poverty; positive effect of literacy).
+
+**Behavioural mediators** act on proximate outcomes: higher-risk sex behaviour increases STI incidence and HIV prevalence; condom use and VCT coverage reduce both. These pathways reflect established syndemic theory (Singer et al., 2017) applied at the ecological level.
+
+**Biological facilitation**: STI incidence is modelled as a direct positive cause of HIV prevalence, representing the biological mechanism by which STIs increase HIV transmissibility through mucosal disruption and immune activation.
+
+**Spatial spillover**: Neighbouring district STI burden (W·STI, the spatially lagged term in the spatial lag regression) acts as an exogenous predictor of district-level STI incidence, reflecting geographic diffusion of infection across district boundaries.
+
+**Composite outcome**: Both STI incidence and HIV prevalence jointly determine the Syndemic Burden Index (SBI), which is dichotomised at the median to produce the binary classification outcome used in XGBoost modelling.
+
+> **Limitations**: This DAG assumes no unmeasured confounding between poverty, literacy, and behavioural mediators at the district level. Ecological-level causal inference remains subject to the ecological fallacy; individual-level causal effects cannot be inferred from these district-level estimates.
+
 ### S10. Software and Versions
 
 | Package | Version |
