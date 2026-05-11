@@ -1,0 +1,22 @@
+cff-version: 1.2.0
+message: "If you use this code or data, please cite as below."
+title: "STI and HIV syndemic burden: geospatial co-clustering and behavioural determinants in Ghana"
+authors:
+  - family-names: Ghanem
+    given-names: Valentine Golden
+    orcid: "https://orcid.org/0009-0002-8332-0220"
+    affiliation: "Ghana COCOBOD Cocoa Clinic, Accra, Ghana"
+version: 1.0.0
+date-released: "2026-05-07"
+url: "https://github.com/valentineghanem-bit/sti-hiv-syndemic-ghana-260districts"
+license: MIT
+keywords:
+  - STI
+  - HIV
+  - syndemic
+  - spatial epidemiology
+  - bivariate LISA
+  - XGBoost
+  - SHAP
+  - Ghana
+  - sub-Saharan Africa

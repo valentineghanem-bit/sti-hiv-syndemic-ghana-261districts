@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Poster — STI &amp; HIV Syndemic Burden in Ghana | Ghanem 2026</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Open Sans',Arial,sans-serif;background:#fff;width:1189px;min-height:841px}
+/* ── HEADER ── */
+.header{background:linear-gradient(135deg,#1a3c5e 0%,#2d6a9f 100%);color:#fff;padding:18px 30px 14px;display:flex;align-items:center;gap:20px}
+.header-text h1{font-size:1.28rem;font-weight:800;line-height:1.3;margin-bottom:5px}
+.header-text p{font-size:.72rem;opacity:.88;line-height:1.5}
+.header-badge{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);border-radius:8px;padding:6px 14px;font-size:.68rem;white-space:nowrap;text-align:center}
+/* ── KPI STRIP ── */
+.kpi-strip{display:flex;background:#1a3c5e;padding:0}
+.kpi-item{flex:1;text-align:center;padding:9px 5px;border-right:1px solid rgba(255,255,255,0.12);color:#fff}
+.kpi-item:last-child{border-right:none}
+.kpi-item .val{font-size:1.1rem;font-weight:800;color:#f6b93b}
+.kpi-item .lbl{font-size:.6rem;opacity:.82;margin-top:1px}
+/* ── BODY ── */
+.body{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;padding:10px 12px;background:#f0f4f8}
+.col{display:flex;flex-direction:column;gap:8px}
+.card{background:#fff;border-radius:8px;padding:12px 14px;box-shadow:0 1px 4px rgba(0,0,0,.07)}
+.card h2{font-size:.72rem;font-weight:800;color:#1a3c5e;text-transform:uppercase;letter-spacing:.05em;border-bottom:2px solid #f6b93b;padding-bottom:4px;margin-bottom:8px}
+.card p{font-size:.68rem;line-height:1.55;color:#2d3748}
+.card p+p{margin-top:5px}
+/* ── SVG MAP ── */
+.map-frame{background:#e8f0fb;border-radius:6px;overflow:hidden;margin:4px 0}
+.map-frame svg{display:block;width:100%}
+/* ── LEGEND ── */
+.legend{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
+.leg-item{display:flex;align-items:center;gap:4px;font-size:.62rem;color:#333}
+.leg-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+/* ── SHAP BARS ── */
+.shap-row{display:flex;align-items:center;gap:6px;margin-bottom:5px}
+.shap-label{font-size:.64rem;color:#1a202c;width:130px;text-align:right;flex-shrink:0}
+.shap-bar-track{flex:1;background:#f0f4f8;border-radius:3px;height:18px;position:relative}
+.shap-bar-fill{height:100%;border-radius:3px;background:#c0392b;opacity:.85}
+.shap-val{font-size:.62rem;color:#555;width:36px;text-align:left;flex-shrink:0}
+/* ── RESULTS LIST ── */
+.result-row{display:flex;justify-content:space-between;align-items:baseline;padding:3px 0;border-bottom:1px solid #edf2f7;font-size:.67rem}
+.result-row .metric{color:#555}
+.result-row .value{font-weight:700;color:#1a3c5e}
+/* ── POLICY BOX ── */
+.policy-box{background:#fff8e1;border-left:4px solid #f6b93b;border-radius:6px;padding:10px 12px}
+.policy-box h3{font-size:.68rem;font-weight:700;color:#b7791f;margin-bottom:5px}
+.policy-box p{font-size:.64rem;color:#333;line-height:1.5}
+.law-badge{display:inline-block;background:#1a3c5e;color:#fff;border-radius:4px;padding:1px 6px;font-size:.58rem;font-weight:700;margin:2px 2px 0 0}
+/* ── REFS ── */
+.refs{font-size:.58rem;line-height:1.5;color:#555}
+/* ── FOOTER ── */
+.footer{background:#1a3c5e;color:rgba(255,255,255,.8);font-size:.6rem;padding:8px 20px;display:flex;justify-content:space-between;align-items:center}
+.footer-qr{display:flex;align-items:center;gap:8px}
+.footer-qr span{font-size:.6rem;color:rgba(255,255,255,.75)}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-text" style="flex:1">
+    <h1>STI and HIV Syndemic Burden: Geospatial Co-clustering<br>and Behavioural Determinants in Ghana</h1>
+    <p>Valentine Golden Ghanem &nbsp;|&nbsp; Ghana COCOBOD Cocoa Clinic, Accra, Ghana &nbsp;|&nbsp; ORCID: 0009-0002-8332-0220 &nbsp;|&nbsp; valentineghanem@gmail.com<br>
+    MSc Public Health &middot; MSc Data Science &nbsp;|&nbsp; Data: Ghana DHS 2014/2022 &middot; Census 2021 &middot; WHO GHO 2022 &nbsp;|&nbsp; STROBE-compliant ecological spatial analysis &nbsp;|&nbsp; <em>Submitted 2026</em></p>
+  </div>
+  <div style="display:flex;gap:8px">
+    <div class="header-badge">n = 260<br>Health Districts</div>
+    <div class="header-badge">Bivariate LISA<br>HIV &times; STI</div>
+    <div class="header-badge">XGBoost<br>+ SHAP</div>
+  </div>
+</div>
+
+<!-- KPI STRIP -->
+<div class="kpi-strip">
+  <div class="kpi-item"><div class="val">0.768</div><div class="lbl">HIV Moran's I</div></div>
+  <div class="kpi-item"><div class="val">0.514</div><div class="lbl">STI Moran's I</div></div>
+  <div class="kpi-item"><div class="val">0.497</div><div class="lbl">BV-LISA Moran's I</div></div>
+  <div class="kpi-item"><div class="val">35</div><div class="lbl">HIV&times;STI Hotspots</div></div>
+  <div class="kpi-item"><div class="val">33.1%</div><div class="lbl">Syndemic Overlap</div></div>
+  <div class="kpi-item"><div class="val">0.972&plusmn;0.031</div><div class="lbl">Spatial CV AUC</div></div>
+  <div class="kpi-item"><div class="val">0.684</div><div class="lbl">SLR R&sup2;</div></div>
+</div>
+
+<!-- BODY -->
+<div class="body">
+
+<!-- ── COLUMN 1: Background + Methods + Autocorrelation ── -->
+<div class="col">
+  <div class="card">
+    <h2>Background</h2>
+    <p>Ghana bears a dual burden of HIV (national prevalence ~1.7%) and curable sexually transmitted infections (STIs), with marked geographic heterogeneity across its 260 health districts. STIs amplify HIV transmission risk two- to fivefold through mucosal disruption and immune activation, yet spatially explicit, district-level evidence on syndemic co-concentration remains absent in the Ghanaian literature.[1,2]</p>
+    <p>Syndemic theory posits that co-occurring epidemics, mediated by shared social determinants, produce excess burden exceeding their independent effects. Identifying spatial co-clustering of HIV and STI prevalence is therefore critical for prioritising geographically targeted prevention resources.[3]</p>
+    <p><strong>Objectives:</strong> (1) Quantify spatial autocorrelation of HIV and STI burden; (2) identify bivariate co-cluster districts; (3) determine behavioural determinants using interpretable machine learning; (4) model district-level risk via spatial lag regression.</p>
+  </div>
+
+  <div class="card">
+    <h2>Methods</h2>
+    <p><strong>Data sources:</strong> Ghana DHS 2014 (HIV biomarker), DHS 2022 (behavioural indicators), Census 2021 (district population denominators), WHO GHO 2022 (ANC syphilis seroprevalence). District-level estimates derived by model-based small-area estimation from regional DHS strata using Census 2021 auxiliary covariates (poverty index; literacy rate).[4]</p>
+    <p><strong>Syndemic Burden Index (SBI):</strong> Composite of MinMax-normalised HIV prevalence and STI incidence, scaled 0–10.</p>
+    <p><strong>Spatial statistics:</strong> Global Moran's I and Bivariate LISA (Queen contiguity + KNN-5 for island districts; 999 permutations). K-means clustering (k=4, silhouette coefficient).</p>
+    <p><strong>Machine learning:</strong> XGBoost (100 estimators; max_depth=4) with native SHAP interpretability; leave-one-region-out spatial cross-validation (9 folds). Spatial lag regression (OLS + spatial lag term).[5]</p>
+  </div>
+
+  <div class="card">
+    <h2>Spatial Autocorrelation Results</h2>
+    <div class="result-row"><span class="metric">HIV Global Moran's I</span><span class="value">0.768 (z=18.82, p&lt;0.001)</span></div>
+    <div class="result-row"><span class="metric">STI Global Moran's I</span><span class="value">0.514 (p&lt;0.001)</span></div>
+    <div class="result-row"><span class="metric">SBI Global Moran's I</span><span class="value">0.675 (p&lt;0.001)</span></div>
+    <div class="result-row"><span class="metric">Bivariate LISA Moran's I</span><span class="value">0.497 (p=0.001)</span></div>
+    <div class="result-row"><span class="metric">BV-LISA HH co-clusters (sig.)</span><span class="value">35 districts</span></div>
+    <div class="result-row"><span class="metric">BV-LISA LL co-clusters (sig.)</span><span class="value">40 districts</span></div>
+    <div class="result-row"><span class="metric">Syndemic Overlap Index (SOI)</span><span class="value">0.331 (86/260 districts)</span></div>
+    <p style="font-size:.62rem;color:#888;margin-top:6px">All global statistics: p &lt; 0.001 (999-permutation inference). Significant clustering confirmed for HIV, STI, and syndemic burden independently and jointly.</p>
+  </div>
+</div>
+
+<!-- ── COLUMN 2: Maps ── -->
+<div class="col">
+  <div class="card">
+    <h2>Bivariate LISA Co-cluster Map (HIV &times; STI)</h2>
+    <div class="map-frame">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 440" width="360" height="440">
+        <rect width="360" height="440" fill="#e8f0fb"/>
+        <text x="180" y="15" text-anchor="middle" font-size="9" fill="#555">Ghana Health Districts — 235 plotted (lat/lon available)</text>
+        <circle cx="246.5" cy="364.3" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Ledzokuku Municipal — ns</title></circle>
+<circle cx="269.5" cy="82.8" r="7" fill="#27ae60" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Chereponi — HL</title></circle>
+<circle cx="76.8" cy="90.1" r="7" fill="#2980b9" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Wa East — LL</title></circle>
+<circle cx="76.5" cy="90.0" r="7" fill="#2980b9" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Wa Municipal — LL</title></circle>
+<circle cx="268.6" cy="111.8" r="7" fill="#2980b9" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Saboba — LL</title></circle>
+<circle cx="62.6" cy="60.8" r="7" fill="#2980b9" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Jirapa Municipal — LL</title></circle>
+<circle cx="239.3" cy="98.9" r="7" fill="#2980b9" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Gushegu Municipal — LL</title></circle>
+<circle cx="91.6" cy="47.9" r="7" fill="#2980b9" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Sissala West — LL</title></circle>
+<circle cx="244.8" cy="160.2" r="7" fill="#2980b9" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Nanumba North Municipal — LL</title></circle>
+<circle cx="62.0" cy="41.7" r="7" fill="#2980b9" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Lambussie Karni — LL</title></circle>
+<circle cx="194.3" cy="45.5" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Bolgatanga Municipal — ns</title></circle>
+<circle cx="258.6" cy="169.8" r="7" fill="#2980b9" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Nanumba South — LL</title></circle>
+<circle cx="106.7" cy="229.1" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Wenchi Municipal — ns</title></circle>
+<circle cx="197.4" cy="37.4" r="7" fill="#2980b9" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Bongo — LL</title></circle>
+<circle cx="112.7" cy="268.6" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Tano South Municipal — ns</title></circle>
+<circle cx="161.7" cy="38.7" r="7" fill="#2980b9" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Kasena Nankana West — LL</title></circle>
+<circle cx="63.9" cy="100.1" r="7" fill="#2980b9" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Wa West — LL</title></circle>
+<circle cx="88.9" cy="257.6" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Sunyani Municipal — ns</title></circle>
+<circle cx="83.1" cy="125.8" r="7" fill="#27ae60" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Sawla Tuna Kalba — HL</title></circle>
+<circle cx="175.4" cy="311.6" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Asante Akim South Municipal — ns</title></circle>
+<circle cx="123.1" cy="57.1" r="7" fill="#2980b9" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Sissala East Municipal — LL</title></circle>
+<circle cx="293.7" cy="347.6" r="7" fill="#c0392b" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Ada East — HH</title></circle>
+<circle cx="266.2" cy="342.5" r="7" fill="#c0392b" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Shai-Osudoku — HH</title></circle>
+<circle cx="284.6" cy="345.9" r="7" fill="#c0392b" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Ada West — HH</title></circle>
+<circle cx="241.9" cy="54.9" r="7" fill="#2980b9" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Bunkpurugu Nakpanduri — LL</title></circle>
+<circle cx="239.6" cy="46.5" r="7" fill="#2980b9" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Garu — LL</title></circle>
+<circle cx="225.0" cy="66.0" r="7" fill="#27ae60" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>East Mamprusi Municipal — HL</title></circle>
+<circle cx="243.5" cy="365.3" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>La Dade-Kotopon Municipal — ns</title></circle>
+<circle cx="219.6" cy="42.0" r="7" fill="#2980b9" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Bawku West — LL</title></circle>
+<circle cx="58.7" cy="358.9" r="7" fill="#c0392b" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Aowin Municipal — HH</title></circle>
+<circle cx="66.8" cy="262.2" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Dormaa East — ns</title></circle>
+<circle cx="40.7" cy="333.3" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Suaman — ns</title></circle>
+<circle cx="72.3" cy="248.6" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Berekum East Municipal — ns</title></circle>
+<circle cx="40.8" cy="289.7" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Bia East — ns</title></circle>
+<circle cx="55.8" cy="240.3" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Jaman South — ns</title></circle>
+<circle cx="36.6" cy="305.0" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Bia West — ns</title></circle>
+<circle cx="87.8" cy="256.4" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Sunyani West Municipal — ns</title></circle>
+<circle cx="64.3" cy="289.8" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Asunafo North Municipal — ns</title></circle>
+<circle cx="50.3" cy="325.2" r="7" fill="#c0392b" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Bodi — HH</title></circle>
+<circle cx="53.9" cy="319.0" r="7" fill="#f39c12" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Juaboso — LH</title></circle>
+<circle cx="137.8" cy="234.2" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Nkoranza North — ns</title></circle>
+<circle cx="131.4" cy="220.4" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Kintampo South — ns</title></circle>
+<circle cx="137.8" cy="397.8" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Shama — ns</title></circle>
+<circle cx="97.6" cy="266.6" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Tano North Municipal — ns</title></circle>
+<circle cx="139.4" cy="379.2" r="7" fill="#c0392b" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Wassa East — HH</title></circle>
+<circle cx="324.4" cy="328.2" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Ketu North Municipal — ns</title></circle>
+<circle cx="120.1" cy="403.3" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Mpohor — ns</title></circle>
+<circle cx="74.6" cy="353.9" r="7" fill="#c0392b" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Wassa Amenfi West Municipal — HH</title></circle>
+<circle cx="330.8" cy="335.2" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Ketu South Municipal — ns</title></circle>
+<circle cx="106.5" cy="353.0" r="7" fill="#c0392b" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Wassa Amenfi Central — HH</title></circle>
+<circle cx="325.1" cy="344.8" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Keta Municipal — ns</title></circle>
+<circle cx="292.6" cy="234.1" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Kadjebi — ns</title></circle>
+<circle cx="181.1" cy="384.5" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Mfantsiman Municipal — ns</title></circle>
+<circle cx="300.3" cy="342.1" r="7" fill="#c0392b" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>South Tongu — HH</title></circle>
+<circle cx="190.0" cy="383.7" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Ekumfi — ns</title></circle>
+<circle cx="145.4" cy="371.1" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Twifo Heman Lower Denkyira — ns</title></circle>
+<circle cx="287.8" cy="253.4" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Jasikan Municipal — ns</title></circle>
+<circle cx="270.6" cy="235.5" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Krachi East Municipal — ns</title></circle>
+<circle cx="290.9" cy="201.0" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Nkwanta South Municipal — ns</title></circle>
+<circle cx="217.8" cy="376.7" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Awutu Senya East Municipal — ns</title></circle>
+<circle cx="140.2" cy="288.3" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Afigya Kwabre South — ns</title></circle>
+<circle cx="242.4" cy="355.7" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>La Nkwantanang Madina Municipal — ns</title></circle>
+<circle cx="131.4" cy="300.0" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Atwima Kwanwoma — ns</title></circle>
+<circle cx="147.8" cy="278.7" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Sekyere South — ns</title></circle>
+<circle cx="231.0" cy="360.4" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Ga East Municipal — ns</title></circle>
+<circle cx="241.9" cy="363.0" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Ayawaso West Municipal — ns</title></circle>
+<circle cx="162.3" cy="292.0" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Sekyere East — ns</title></circle>
+<circle cx="231.0" cy="360.4" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Ga South Municipal — ns</title></circle>
+<circle cx="231.0" cy="360.4" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Ga West Municipal — ns</title></circle>
+<circle cx="176.5" cy="265.2" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Sekyere Central — ns</title></circle>
+<circle cx="110.1" cy="381.8" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Ga Central Municipal — ns</title></circle>
+<circle cx="126.8" cy="261.2" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Offinso North — ns</title></circle>
+<circle cx="253.5" cy="229.2" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Krachi West Municipal — ns</title></circle>
+<circle cx="131.3" cy="274.9" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Offinso Municipal — ns</title></circle>
+<circle cx="134.5" cy="327.0" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Obuasi Municipal — ns</title></circle>
+<circle cx="248.5" cy="205.3" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Krachi Nchumuru — ns</title></circle>
+<circle cx="145.3" cy="291.4" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Kwabre East — ns</title></circle>
+<circle cx="299.4" cy="312.5" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Adaklu — ns</title></circle>
+<circle cx="155.1" cy="254.7" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Ejura Sekyedumase Municipal — ns</title></circle>
+<circle cx="110.8" cy="274.2" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Atwima Nwabiagya South Municipal — ns</title></circle>
+<circle cx="290.8" cy="201.0" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Akatsi South Municipal — ns</title></circle>
+<circle cx="99.9" cy="305.8" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Atwima Mponua — ns</title></circle>
+<circle cx="317.0" cy="320.9" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Akatsi North — ns</title></circle>
+<circle cx="288.0" cy="302.3" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Ho Municipal — ns</title></circle>
+<circle cx="155.6" cy="339.7" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Adansi South — ns</title></circle>
+<circle cx="288.6" cy="269.0" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Hohoe Municipal — ns</title></circle>
+<circle cx="147.4" cy="324.8" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Adansi Asokwa — ns</title></circle>
+<circle cx="287.9" cy="303.6" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Ho West — ns</title></circle>
+<circle cx="157.5" cy="317.3" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Bosome Freho — ns</title></circle>
+<circle cx="294.6" cy="277.1" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Afadzato South — ns</title></circle>
+<circle cx="119.5" cy="281.8" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Ahafo Ano South East — ns</title></circle>
+<circle cx="270.5" cy="283.8" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>North Dayi — ns</title></circle>
+<circle cx="141.4" cy="313.2" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Bekwai Municipal — ns</title></circle>
+<circle cx="277.3" cy="278.5" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Kpando Municipal — ns</title></circle>
+<circle cx="240.7" cy="329.1" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Bosomtwi — ns</title></circle>
+<circle cx="275.8" cy="331.1" r="7" fill="#c0392b" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>North Tongu — HH</title></circle>
+<circle cx="298.2" cy="329.6" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Central Tongu — ns</title></circle>
+<circle cx="154.8" cy="275.0" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Mampong Municipal — ns</title></circle>
+<circle cx="184.6" cy="376.2" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Ajumako Enyan Essiam — ns</title></circle>
+<circle cx="195.4" cy="377.7" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Gomoa West — ns</title></circle>
+<circle cx="114.8" cy="408.3" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Agona West Municipal — ns</title></circle>
+<circle cx="208.1" cy="362.4" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Agona East — ns</title></circle>
+<circle cx="157.0" cy="350.7" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Assin North — ns</title></circle>
+<circle cx="164.3" cy="369.0" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Assin South — ns</title></circle>
+<circle cx="181.7" cy="363.0" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Asikuma Odoben Brakwa — ns</title></circle>
+<circle cx="212.2" cy="377.9" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Effutu Municipal — ns</title></circle>
+<circle cx="212.7" cy="372.2" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Gomoa East — ns</title></circle>
+<circle cx="170.1" cy="384.9" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Abura Asebu Kwamankese — ns</title></circle>
+<circle cx="68.7" cy="389.3" r="7" fill="#c0392b" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Jomoro Municipal — HH</title></circle>
+<circle cx="82.5" cy="392.3" r="7" fill="#c0392b" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Ellembelle — HH</title></circle>
+<circle cx="45.2" cy="280.0" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Dormaa West — ns</title></circle>
+<circle cx="67.0" cy="76.2" r="7" fill="#2980b9" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Nadowli Kaleo — LL</title></circle>
+<circle cx="109.6" cy="374.2" r="7" fill="#c0392b" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Prestea/Huni Valley Municipal — HH</title></circle>
+<circle cx="113.4" cy="410.7" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Ahanta West Municipal — ns</title></circle>
+<circle cx="93.8" cy="71.2" r="7" fill="#2980b9" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Daffiama Bussie Issa — LL</title></circle>
+<circle cx="96.6" cy="396.3" r="7" fill="#c0392b" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Nzema East Municipal — HH</title></circle>
+<circle cx="51.0" cy="56.1" r="7" fill="#2980b9" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Lawra Municipal — LL</title></circle>
+<circle cx="58.4" cy="41.4" r="7" fill="#2980b9" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Nandom — LL</title></circle>
+<circle cx="113.0" cy="382.4" r="7" fill="#f39c12" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Tarkwa-Nsuaem Municipal — LH</title></circle>
+<circle cx="210.2" cy="54.1" r="7" fill="#2980b9" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Talensi — LL</title></circle>
+<circle cx="50.2" cy="337.4" r="7" fill="#c0392b" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Sefwi Akontombra — HH</title></circle>
+<circle cx="126.4" cy="403.5" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Effia Kwesimintsim Municipal — ns</title></circle>
+<circle cx="207.6" cy="41.7" r="7" fill="#2980b9" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Nabdam — LL</title></circle>
+<circle cx="164.9" cy="61.2" r="7" fill="#2980b9" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Builsa South — LL</title></circle>
+<circle cx="162.9" cy="48.6" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Builsa North Municipal — ns</title></circle>
+<circle cx="232.9" cy="34.2" r="7" fill="#2980b9" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Binduri — LL</title></circle>
+<circle cx="245.6" cy="27.1" r="7" fill="#2980b9" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Pusiga — LL</title></circle>
+<circle cx="237.4" cy="28.6" r="7" fill="#2980b9" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Bawku Municipal — LL</title></circle>
+<circle cx="225.9" cy="156.1" r="7" fill="#27ae60" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>North Gonja — HL</title></circle>
+<circle cx="147.5" cy="123.0" r="7" fill="#2980b9" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>West Gonja — LL</title></circle>
+<circle cx="230.8" cy="127.5" r="7" fill="#2980b9" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Mion — LL</title></circle>
+<circle cx="256.3" cy="126.2" r="7" fill="#2980b9" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Yendi Municipal — LL</title></circle>
+<circle cx="169.5" cy="121.2" r="7" fill="#2980b9" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Tolon — LL</title></circle>
+<circle cx="187.3" cy="121.0" r="7" fill="#2980b9" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Kumbungu — LL</title></circle>
+<circle cx="200.3" cy="75.5" r="7" fill="#2980b9" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>West Mamprusi Municipal — LL</title></circle>
+<circle cx="164.1" cy="79.1" r="7" fill="#2980b9" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Mamprugu Moagduri — LL</title></circle>
+<circle cx="280.8" cy="137.3" r="7" fill="#2980b9" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Zabzugu — LL</title></circle>
+<circle cx="291.3" cy="133.9" r="7" fill="#2980b9" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Tatale Sanguli — LL</title></circle>
+<circle cx="241.7" cy="237.5" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Sene East — ns</title></circle>
+<circle cx="95.8" cy="321.8" r="7" fill="#f39c12" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Bibiani Anhwiaso Bekwai Municipal — LH</title></circle>
+<circle cx="210.7" cy="232.4" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Sene West — ns</title></circle>
+<circle cx="131.0" cy="350.1" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Upper Denkyira East Municipal — ns</title></circle>
+<circle cx="75.1" cy="273.8" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Asutifi North — ns</title></circle>
+<circle cx="95.9" cy="284.0" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Ahafo Ano North Municipal — ns</title></circle>
+<circle cx="124.7" cy="327.2" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Amansie Central — ns</title></circle>
+<circle cx="122.9" cy="312.9" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Amansie West — ns</title></circle>
+<circle cx="79.6" cy="287.7" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Asutifi South — ns</title></circle>
+<circle cx="114.2" cy="246.0" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Techiman Municipal — ns</title></circle>
+<circle cx="107.5" cy="333.4" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Upper Denkyira West — ns</title></circle>
+<circle cx="113.5" cy="235.2" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Techiman North — ns</title></circle>
+<circle cx="152.3" cy="393.5" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Komenda Edina Eguafo Abirem Municipal — ns</title></circle>
+<circle cx="87.1" cy="206.8" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Banda — ns</title></circle>
+<circle cx="75.6" cy="321.2" r="7" fill="#c0392b" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Sefwi Wiawso Municipal — HH</title></circle>
+<circle cx="62.9" cy="222.3" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Jaman North — ns</title></circle>
+<circle cx="74.6" cy="305.4" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Asunafo South — ns</title></circle>
+<circle cx="102.3" cy="219.3" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Tain — ns</title></circle>
+<circle cx="135.4" cy="250.6" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Nkoranza South Municipal — ns</title></circle>
+<circle cx="166.5" cy="284.0" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Sekyere Kumawu — ns</title></circle>
+<circle cx="99.7" cy="174.4" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Bole — ns</title></circle>
+<circle cx="186.5" cy="284.2" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Asante Akim North Municipal — ns</title></circle>
+<circle cx="165.5" cy="305.3" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Asante Akim Central Municipal — ns</title></circle>
+<circle cx="131.7" cy="213.6" r="7" fill="#2980b9" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Kintampo North Municipal — LL</title></circle>
+<circle cx="143.3" cy="296.4" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Asokore Mampong Municipal — ns</title></circle>
+<circle cx="176.8" cy="233.7" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Atebubu Amantin Municipal — ns</title></circle>
+<circle cx="135.6" cy="298.1" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Kwadaso Municipal — ns</title></circle>
+<circle cx="253.8" cy="188.4" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Kpandai — ns</title></circle>
+<circle cx="150.4" cy="296.1" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Ejisu Municipal — ns</title></circle>
+<circle cx="273.4" cy="254.3" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Biakoye — ns</title></circle>
+<circle cx="113.2" cy="347.6" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Wassa Amenfi East Municipal — ns</title></circle>
+<circle cx="175.7" cy="159.3" r="7" fill="#27ae60" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Central Gonja — HL</title></circle>
+<circle cx="249.8" cy="361.5" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Tema West Municipal — ns</title></circle>
+<circle cx="252.2" cy="358.5" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Ashaiman Municipal — ns</title></circle>
+<circle cx="186.8" cy="219.2" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Pru East — ns</title></circle>
+<circle cx="249.4" cy="354.1" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Kpone Katamanso Municipal — ns</title></circle>
+<circle cx="195.9" cy="116.9" r="7" fill="#2980b9" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Savelugu Municipal — LL</title></circle>
+<circle cx="224.0" cy="98.4" r="7" fill="#2980b9" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Karaga — LL</title></circle>
+<circle cx="225.9" cy="156.1" r="7" fill="#27ae60" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>North East Gonja — HL</title></circle>
+<circle cx="271.8" cy="306.5" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>South Dayi — ns</title></circle>
+<circle cx="248.2" cy="38.3" r="7" fill="#2980b9" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Tempane — LL</title></circle>
+<circle cx="252.7" cy="66.7" r="7" fill="#27ae60" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Yunyoo Nasuan — HL</title></circle>
+<circle cx="204.1" cy="121.0" r="7" fill="#2980b9" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Nanton — LL</title></circle>
+<circle cx="212.7" cy="372.2" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Gomoa Central — ns</title></circle>
+<circle cx="161.3" cy="214.8" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Pru West — ns</title></circle>
+<circle cx="61.9" cy="249.4" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Berekum West — ns</title></circle>
+<circle cx="112.4" cy="289.0" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Ahafo Ano South West — ns</title></circle>
+<circle cx="111.6" cy="321.0" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Amansie South — ns</title></circle>
+<circle cx="130.6" cy="286.0" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Atwima Nwabiagya North — ns</title></circle>
+<circle cx="141.6" cy="321.5" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Adansi North — ns</title></circle>
+<circle cx="140.6" cy="328.9" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Obuasi East — ns</title></circle>
+<circle cx="139.0" cy="276.1" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Afigya Kwabre North — ns</title></circle>
+<circle cx="144.4" cy="298.6" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Oforikrom Municipal — ns</title></circle>
+<circle cx="140.7" cy="298.5" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Asokwa Municipal — ns</title></circle>
+<circle cx="140.6" cy="294.4" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Old Tafo Municipal — ns</title></circle>
+<circle cx="139.1" cy="294.6" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Suame Municipal — ns</title></circle>
+<circle cx="236.1" cy="335.6" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Juaben Municipal — ns</title></circle>
+<circle cx="237.5" cy="367.4" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Ablekuma Central Municipal — ns</title></circle>
+<circle cx="240.6" cy="367.1" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Korle Klottey Municipal — ns</title></circle>
+<circle cx="235.9" cy="365.4" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Ablekuma North Municipal — ns</title></circle>
+<circle cx="240.5" cy="365.2" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Ayawaso North Municipal — ns</title></circle>
+<circle cx="240.9" cy="365.7" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Ayawaso East Municipal — ns</title></circle>
+<circle cx="231.0" cy="360.4" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Ga North Municipal — ns</title></circle>
+<circle cx="233.6" cy="367.4" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Weija Gbawe Municipal — ns</title></circle>
+<circle cx="249.2" cy="364.0" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Krowor Municipal — ns</title></circle>
+<circle cx="198.5" cy="195.5" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>East Gonja Municipal — ns</title></circle>
+<circle cx="235.7" cy="368.1" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Ablekuma West Municipal — ns</title></circle>
+<circle cx="239.5" cy="365.1" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Ayawaso Central Municipal — ns</title></circle>
+<circle cx="318.6" cy="352.7" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Anloga — ns</title></circle>
+<circle cx="290.8" cy="201.0" r="7" fill="#c0392b" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Kwahu South Municipal — HH</title></circle>
+<circle cx="197.1" cy="348.9" r="7" fill="#c0392b" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Asene Manso Akroso — HH</title></circle>
+<circle cx="183.8" cy="350.1" r="7" fill="#c0392b" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Achiase — HH</title></circle>
+<circle cx="245.6" cy="337.5" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Okere — ns</title></circle>
+<circle cx="242.8" cy="330.4" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Yilo Krobo Municipal — ns</title></circle>
+<circle cx="209.5" cy="327.2" r="7" fill="#c0392b" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Atiwa West — HH</title></circle>
+<circle cx="232.4" cy="331.6" r="7" fill="#f39c12" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>New Juaben North Municipal — LH</title></circle>
+<circle cx="228.9" cy="309.4" r="7" fill="#c0392b" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Fanteakwa North — HH</title></circle>
+<circle cx="181.9" cy="317.3" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Birim North — ns</title></circle>
+<circle cx="261.4" cy="317.7" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Asuogyaman — ns</title></circle>
+<circle cx="197.1" cy="294.9" r="7" fill="#c0392b" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Kwahu East — HH</title></circle>
+<circle cx="202.9" cy="309.8" r="7" fill="#f39c12" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Kwahu West Municipal — LH</title></circle>
+<circle cx="228.8" cy="351.2" r="7" fill="#f39c12" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Nsawam Adoagyiri Municipal — LH</title></circle>
+<circle cx="197.8" cy="336.9" r="7" fill="#f39c12" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Denkyembuor — LH</title></circle>
+<circle cx="192.4" cy="325.6" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Kwaebibirem Municipal — ns</title></circle>
+<circle cx="221.9" cy="285.5" r="7" fill="#c0392b" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Kwahu Afram Plains South — HH</title></circle>
+<circle cx="255.0" cy="286.1" r="7" fill="#c0392b" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Kwahu Afram Plains North — HH</title></circle>
+<circle cx="222.3" cy="337.8" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>Suhum Municipal — ns</title></circle>
+<circle cx="222.7" cy="343.4" r="7" fill="#c0392b" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Ayensuano — HH</title></circle>
+<circle cx="221.2" cy="329.4" r="7" fill="#c0392b" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Abuakwa South Municipal — HH</title></circle>
+<circle cx="216.3" cy="351.9" r="7" fill="#c0392b" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Upper West Akim — HH</title></circle>
+<circle cx="206.1" cy="345.7" r="7" fill="#c0392b" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>West Akim Municipal — HH</title></circle>
+<circle cx="212.2" cy="315.7" r="7" fill="#f39c12" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Atiwa East — LH</title></circle>
+<circle cx="236.1" cy="335.6" r="4" fill="#cccccc" opacity="0.35" stroke="none" stroke-width="0.5"><title>New Juaben South Municipal — ns</title></circle>
+<circle cx="182.9" cy="343.8" r="7" fill="#c0392b" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Birim South — HH</title></circle>
+<circle cx="227.5" cy="325.6" r="7" fill="#f39c12" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Abuakwa North Municipal — LH</title></circle>
+<circle cx="232.5" cy="317.2" r="7" fill="#c0392b" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Fanteakwa South — HH</title></circle>
+<circle cx="183.2" cy="341.6" r="7" fill="#f39c12" opacity="0.9" stroke="#fff" stroke-width="0.5"><title>Birim Central Municipal — LH</title></circle>
+      </svg>
+    </div>
+    <div class="legend">
+      <div class="leg-item"><div class="leg-dot" style="background:#c0392b"></div>HH — High-High hotspot (n=35)</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#2980b9"></div>LL — Low-Low coldspot (n=40)</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#f39c12"></div>LH — Low-High (n=10)</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#27ae60"></div>HL — High-Low (n=11)</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#ccc"></div>Not significant (n=164)</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>K-means Cluster Map (k=4; silhouette=0.234)</h2>
+    <div class="map-frame">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 340" width="360" height="340">
+        <rect width="360" height="340" fill="#e8f0fb"/>
+        <text x="180" y="15" text-anchor="middle" font-size="9" fill="#555">K-means cluster assignment by district</text>
+        <circle cx="246.5" cy="364.3" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Ledzokuku Municipal — Moderate Syndemic Risk</title></circle>
+<circle cx="269.5" cy="82.8" r="6" fill="#27ae60" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Chereponi — Low Syndemic Risk</title></circle>
+<circle cx="76.8" cy="90.1" r="6" fill="#27ae60" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Wa East — Low Syndemic Risk</title></circle>
+<circle cx="76.5" cy="90.0" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Wa Municipal — Moderate Syndemic Risk</title></circle>
+<circle cx="268.6" cy="111.8" r="6" fill="#27ae60" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Saboba — Low Syndemic Risk</title></circle>
+<circle cx="62.6" cy="60.8" r="6" fill="#27ae60" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Jirapa Municipal — Low Syndemic Risk</title></circle>
+<circle cx="239.3" cy="98.9" r="6" fill="#27ae60" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Gushegu Municipal — Low Syndemic Risk</title></circle>
+<circle cx="91.6" cy="47.9" r="6" fill="#27ae60" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Sissala West — Low Syndemic Risk</title></circle>
+<circle cx="244.8" cy="160.2" r="6" fill="#27ae60" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Nanumba North Municipal — Low Syndemic Risk</title></circle>
+<circle cx="62.0" cy="41.7" r="6" fill="#27ae60" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Lambussie Karni — Low Syndemic Risk</title></circle>
+<circle cx="194.3" cy="45.5" r="6" fill="#27ae60" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Bolgatanga Municipal — Low Syndemic Risk</title></circle>
+<circle cx="258.6" cy="169.8" r="6" fill="#27ae60" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Nanumba South — Low Syndemic Risk</title></circle>
+<circle cx="106.7" cy="229.1" r="6" fill="#8e44ad" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Wenchi Municipal — Critical Syndemic Burden</title></circle>
+<circle cx="197.4" cy="37.4" r="6" fill="#27ae60" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Bongo — Low Syndemic Risk</title></circle>
+<circle cx="112.7" cy="268.6" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Tano South Municipal — Moderate Syndemic Risk</title></circle>
+<circle cx="161.7" cy="38.7" r="6" fill="#27ae60" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Kasena Nankana West — Low Syndemic Risk</title></circle>
+<circle cx="63.9" cy="100.1" r="6" fill="#27ae60" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Wa West — Low Syndemic Risk</title></circle>
+<circle cx="88.9" cy="257.6" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Sunyani Municipal — Moderate Syndemic Risk</title></circle>
+<circle cx="83.1" cy="125.8" r="6" fill="#27ae60" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Sawla Tuna Kalba — Low Syndemic Risk</title></circle>
+<circle cx="175.4" cy="311.6" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Asante Akim South Municipal — High Syndemic Burden</title></circle>
+<circle cx="123.1" cy="57.1" r="6" fill="#27ae60" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Sissala East Municipal — Low Syndemic Risk</title></circle>
+<circle cx="293.7" cy="347.6" r="6" fill="#8e44ad" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Ada East — Critical Syndemic Burden</title></circle>
+<circle cx="266.2" cy="342.5" r="6" fill="#8e44ad" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Shai-Osudoku — Critical Syndemic Burden</title></circle>
+<circle cx="284.6" cy="345.9" r="6" fill="#8e44ad" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Ada West — Critical Syndemic Burden</title></circle>
+<circle cx="241.9" cy="54.9" r="6" fill="#27ae60" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Bunkpurugu Nakpanduri — Low Syndemic Risk</title></circle>
+<circle cx="239.6" cy="46.5" r="6" fill="#27ae60" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Garu — Low Syndemic Risk</title></circle>
+<circle cx="225.0" cy="66.0" r="6" fill="#27ae60" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>East Mamprusi Municipal — Low Syndemic Risk</title></circle>
+<circle cx="243.5" cy="365.3" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>La Dade-Kotopon Municipal — Moderate Syndemic Risk</title></circle>
+<circle cx="219.6" cy="42.0" r="6" fill="#27ae60" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Bawku West — Low Syndemic Risk</title></circle>
+<circle cx="58.7" cy="358.9" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Aowin Municipal — High Syndemic Burden</title></circle>
+<circle cx="66.8" cy="262.2" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Dormaa East — High Syndemic Burden</title></circle>
+<circle cx="40.7" cy="333.3" r="6" fill="#8e44ad" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Suaman — Critical Syndemic Burden</title></circle>
+<circle cx="72.3" cy="248.6" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Berekum East Municipal — Moderate Syndemic Risk</title></circle>
+<circle cx="40.8" cy="289.7" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Bia East — High Syndemic Burden</title></circle>
+<circle cx="55.8" cy="240.3" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Jaman South — High Syndemic Burden</title></circle>
+<circle cx="36.6" cy="305.0" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Bia West — Moderate Syndemic Risk</title></circle>
+<circle cx="87.8" cy="256.4" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Sunyani West Municipal — Moderate Syndemic Risk</title></circle>
+<circle cx="64.3" cy="289.8" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Asunafo North Municipal — Moderate Syndemic Risk</title></circle>
+<circle cx="50.3" cy="325.2" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Bodi — High Syndemic Burden</title></circle>
+<circle cx="53.9" cy="319.0" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Juaboso — High Syndemic Burden</title></circle>
+<circle cx="137.8" cy="234.2" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Nkoranza North — High Syndemic Burden</title></circle>
+<circle cx="131.4" cy="220.4" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Kintampo South — High Syndemic Burden</title></circle>
+<circle cx="137.8" cy="397.8" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Shama — Moderate Syndemic Risk</title></circle>
+<circle cx="97.6" cy="266.6" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Tano North Municipal — Moderate Syndemic Risk</title></circle>
+<circle cx="139.4" cy="379.2" r="6" fill="#8e44ad" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Wassa East — Critical Syndemic Burden</title></circle>
+<circle cx="324.4" cy="328.2" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Ketu North Municipal — High Syndemic Burden</title></circle>
+<circle cx="120.1" cy="403.3" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Mpohor — High Syndemic Burden</title></circle>
+<circle cx="74.6" cy="353.9" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Wassa Amenfi West Municipal — High Syndemic Burden</title></circle>
+<circle cx="330.8" cy="335.2" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Ketu South Municipal — High Syndemic Burden</title></circle>
+<circle cx="106.5" cy="353.0" r="6" fill="#8e44ad" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Wassa Amenfi Central — Critical Syndemic Burden</title></circle>
+<circle cx="325.1" cy="344.8" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Keta Municipal — High Syndemic Burden</title></circle>
+<circle cx="292.6" cy="234.1" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Kadjebi — High Syndemic Burden</title></circle>
+<circle cx="181.1" cy="384.5" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Mfantsiman Municipal — High Syndemic Burden</title></circle>
+<circle cx="300.3" cy="342.1" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>South Tongu — High Syndemic Burden</title></circle>
+<circle cx="190.0" cy="383.7" r="6" fill="#8e44ad" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Ekumfi — Critical Syndemic Burden</title></circle>
+<circle cx="145.4" cy="371.1" r="6" fill="#8e44ad" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Twifo Heman Lower Denkyira — Critical Syndemic Burden</title></circle>
+<circle cx="287.8" cy="253.4" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Jasikan Municipal — High Syndemic Burden</title></circle>
+<circle cx="270.6" cy="235.5" r="6" fill="#8e44ad" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Krachi East Municipal — Critical Syndemic Burden</title></circle>
+<circle cx="290.9" cy="201.0" r="6" fill="#8e44ad" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Nkwanta South Municipal — Critical Syndemic Burden</title></circle>
+<circle cx="217.8" cy="376.7" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Awutu Senya East Municipal — Moderate Syndemic Risk</title></circle>
+<circle cx="140.2" cy="288.3" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Afigya Kwabre South — Moderate Syndemic Risk</title></circle>
+<circle cx="242.4" cy="355.7" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>La Nkwantanang Madina Municipal — Moderate Syndemic Risk</title></circle>
+<circle cx="131.4" cy="300.0" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Atwima Kwanwoma — Moderate Syndemic Risk</title></circle>
+<circle cx="147.8" cy="278.7" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Sekyere South — Moderate Syndemic Risk</title></circle>
+<circle cx="231.0" cy="360.4" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Ga East Municipal — Moderate Syndemic Risk</title></circle>
+<circle cx="241.9" cy="363.0" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Ayawaso West Municipal — Moderate Syndemic Risk</title></circle>
+<circle cx="162.3" cy="292.0" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Sekyere East — Moderate Syndemic Risk</title></circle>
+<circle cx="231.0" cy="360.4" r="6" fill="#8e44ad" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Ga South Municipal — Critical Syndemic Burden</title></circle>
+<circle cx="231.0" cy="360.4" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Ga West Municipal — Moderate Syndemic Risk</title></circle>
+<circle cx="176.5" cy="265.2" r="6" fill="#8e44ad" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Sekyere Central — Critical Syndemic Burden</title></circle>
+<circle cx="110.1" cy="381.8" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Ga Central Municipal — Moderate Syndemic Risk</title></circle>
+<circle cx="126.8" cy="261.2" r="6" fill="#8e44ad" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Offinso North — Critical Syndemic Burden</title></circle>
+<circle cx="253.5" cy="229.2" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Krachi West Municipal — High Syndemic Burden</title></circle>
+<circle cx="131.3" cy="274.9" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Offinso Municipal — High Syndemic Burden</title></circle>
+<circle cx="134.5" cy="327.0" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Obuasi Municipal — Moderate Syndemic Risk</title></circle>
+<circle cx="248.5" cy="205.3" r="6" fill="#8e44ad" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Krachi Nchumuru — Critical Syndemic Burden</title></circle>
+<circle cx="145.3" cy="291.4" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Kwabre East — Moderate Syndemic Risk</title></circle>
+<circle cx="299.4" cy="312.5" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Adaklu — High Syndemic Burden</title></circle>
+<circle cx="155.1" cy="254.7" r="6" fill="#8e44ad" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Ejura Sekyedumase Municipal — Critical Syndemic Burden</title></circle>
+<circle cx="110.8" cy="274.2" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Atwima Nwabiagya South Municipal — Moderate Syndemic Risk</title></circle>
+<circle cx="290.8" cy="201.0" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Akatsi South Municipal — High Syndemic Burden</title></circle>
+<circle cx="99.9" cy="305.8" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Atwima Mponua — High Syndemic Burden</title></circle>
+<circle cx="317.0" cy="320.9" r="6" fill="#8e44ad" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Akatsi North — Critical Syndemic Burden</title></circle>
+<circle cx="288.0" cy="302.3" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Ho Municipal — Moderate Syndemic Risk</title></circle>
+<circle cx="155.6" cy="339.7" r="6" fill="#8e44ad" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Adansi South — Critical Syndemic Burden</title></circle>
+<circle cx="288.6" cy="269.0" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Hohoe Municipal — Moderate Syndemic Risk</title></circle>
+<circle cx="147.4" cy="324.8" r="6" fill="#8e44ad" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Adansi Asokwa — Critical Syndemic Burden</title></circle>
+<circle cx="287.9" cy="303.6" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Ho West — High Syndemic Burden</title></circle>
+<circle cx="157.5" cy="317.3" r="6" fill="#8e44ad" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Bosome Freho — Critical Syndemic Burden</title></circle>
+<circle cx="294.6" cy="277.1" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Afadzato South — High Syndemic Burden</title></circle>
+<circle cx="119.5" cy="281.8" r="6" fill="#8e44ad" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Ahafo Ano South East — Critical Syndemic Burden</title></circle>
+<circle cx="270.5" cy="283.8" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>North Dayi — Moderate Syndemic Risk</title></circle>
+<circle cx="141.4" cy="313.2" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Bekwai Municipal — Moderate Syndemic Risk</title></circle>
+<circle cx="277.3" cy="278.5" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Kpando Municipal — Moderate Syndemic Risk</title></circle>
+<circle cx="240.7" cy="329.1" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Bosomtwi — Moderate Syndemic Risk</title></circle>
+<circle cx="275.8" cy="331.1" r="6" fill="#8e44ad" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>North Tongu — Critical Syndemic Burden</title></circle>
+<circle cx="298.2" cy="329.6" r="6" fill="#8e44ad" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Central Tongu — Critical Syndemic Burden</title></circle>
+<circle cx="154.8" cy="275.0" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Mampong Municipal — High Syndemic Burden</title></circle>
+<circle cx="184.6" cy="376.2" r="6" fill="#8e44ad" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Ajumako Enyan Essiam — Critical Syndemic Burden</title></circle>
+<circle cx="195.4" cy="377.7" r="6" fill="#8e44ad" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Gomoa West — Critical Syndemic Burden</title></circle>
+<circle cx="114.8" cy="408.3" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Agona West Municipal — High Syndemic Burden</title></circle>
+<circle cx="208.1" cy="362.4" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Agona East — High Syndemic Burden</title></circle>
+<circle cx="157.0" cy="350.7" r="6" fill="#8e44ad" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Assin North — Critical Syndemic Burden</title></circle>
+<circle cx="164.3" cy="369.0" r="6" fill="#8e44ad" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Assin South — Critical Syndemic Burden</title></circle>
+<circle cx="181.7" cy="363.0" r="6" fill="#8e44ad" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Asikuma Odoben Brakwa — Critical Syndemic Burden</title></circle>
+<circle cx="212.2" cy="377.9" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Effutu Municipal — Moderate Syndemic Risk</title></circle>
+<circle cx="212.7" cy="372.2" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Gomoa East — Moderate Syndemic Risk</title></circle>
+<circle cx="170.1" cy="384.9" r="6" fill="#8e44ad" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Abura Asebu Kwamankese — Critical Syndemic Burden</title></circle>
+<circle cx="68.7" cy="389.3" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Jomoro Municipal — High Syndemic Burden</title></circle>
+<circle cx="82.5" cy="392.3" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Ellembelle — High Syndemic Burden</title></circle>
+<circle cx="45.2" cy="280.0" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Dormaa West — High Syndemic Burden</title></circle>
+<circle cx="67.0" cy="76.2" r="6" fill="#27ae60" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Nadowli Kaleo — Low Syndemic Risk</title></circle>
+<circle cx="109.6" cy="374.2" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Prestea/Huni Valley Municipal — High Syndemic Burden</title></circle>
+<circle cx="113.4" cy="410.7" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Ahanta West Municipal — High Syndemic Burden</title></circle>
+<circle cx="93.8" cy="71.2" r="6" fill="#27ae60" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Daffiama Bussie Issa — Low Syndemic Risk</title></circle>
+<circle cx="96.6" cy="396.3" r="6" fill="#8e44ad" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Nzema East Municipal — Critical Syndemic Burden</title></circle>
+<circle cx="51.0" cy="56.1" r="6" fill="#27ae60" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Lawra Municipal — Low Syndemic Risk</title></circle>
+<circle cx="58.4" cy="41.4" r="6" fill="#27ae60" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Nandom — Low Syndemic Risk</title></circle>
+<circle cx="113.0" cy="382.4" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Tarkwa-Nsuaem Municipal — Moderate Syndemic Risk</title></circle>
+<circle cx="210.2" cy="54.1" r="6" fill="#27ae60" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Talensi — Low Syndemic Risk</title></circle>
+<circle cx="50.2" cy="337.4" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Sefwi Akontombra — High Syndemic Burden</title></circle>
+<circle cx="126.4" cy="403.5" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Effia Kwesimintsim Municipal — Moderate Syndemic Risk</title></circle>
+<circle cx="207.6" cy="41.7" r="6" fill="#27ae60" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Nabdam — Low Syndemic Risk</title></circle>
+<circle cx="164.9" cy="61.2" r="6" fill="#27ae60" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Builsa South — Low Syndemic Risk</title></circle>
+<circle cx="162.9" cy="48.6" r="6" fill="#27ae60" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Builsa North Municipal — Low Syndemic Risk</title></circle>
+<circle cx="232.9" cy="34.2" r="6" fill="#27ae60" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Binduri — Low Syndemic Risk</title></circle>
+<circle cx="245.6" cy="27.1" r="6" fill="#27ae60" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Pusiga — Low Syndemic Risk</title></circle>
+<circle cx="237.4" cy="28.6" r="6" fill="#27ae60" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Bawku Municipal — Low Syndemic Risk</title></circle>
+<circle cx="225.9" cy="156.1" r="6" fill="#27ae60" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>North Gonja — Low Syndemic Risk</title></circle>
+<circle cx="147.5" cy="123.0" r="6" fill="#27ae60" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>West Gonja — Low Syndemic Risk</title></circle>
+<circle cx="230.8" cy="127.5" r="6" fill="#27ae60" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Mion — Low Syndemic Risk</title></circle>
+<circle cx="256.3" cy="126.2" r="6" fill="#27ae60" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Yendi Municipal — Low Syndemic Risk</title></circle>
+<circle cx="169.5" cy="121.2" r="6" fill="#27ae60" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Tolon — Low Syndemic Risk</title></circle>
+<circle cx="187.3" cy="121.0" r="6" fill="#27ae60" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Kumbungu — Low Syndemic Risk</title></circle>
+<circle cx="200.3" cy="75.5" r="6" fill="#27ae60" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>West Mamprusi Municipal — Low Syndemic Risk</title></circle>
+<circle cx="164.1" cy="79.1" r="6" fill="#27ae60" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Mamprugu Moagduri — Low Syndemic Risk</title></circle>
+<circle cx="280.8" cy="137.3" r="6" fill="#27ae60" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Zabzugu — Low Syndemic Risk</title></circle>
+<circle cx="291.3" cy="133.9" r="6" fill="#27ae60" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Tatale Sanguli — Low Syndemic Risk</title></circle>
+<circle cx="241.7" cy="237.5" r="6" fill="#8e44ad" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Sene East — Critical Syndemic Burden</title></circle>
+<circle cx="95.8" cy="321.8" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Bibiani Anhwiaso Bekwai Municipal — Moderate Syndemic Risk</title></circle>
+<circle cx="210.7" cy="232.4" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Sene West — High Syndemic Burden</title></circle>
+<circle cx="131.0" cy="350.1" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Upper Denkyira East Municipal — High Syndemic Burden</title></circle>
+<circle cx="75.1" cy="273.8" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Asutifi North — Moderate Syndemic Risk</title></circle>
+<circle cx="95.9" cy="284.0" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Ahafo Ano North Municipal — High Syndemic Burden</title></circle>
+<circle cx="124.7" cy="327.2" r="6" fill="#8e44ad" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Amansie Central — Critical Syndemic Burden</title></circle>
+<circle cx="122.9" cy="312.9" r="6" fill="#8e44ad" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Amansie West — Critical Syndemic Burden</title></circle>
+<circle cx="79.6" cy="287.7" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Asutifi South — High Syndemic Burden</title></circle>
+<circle cx="114.2" cy="246.0" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Techiman Municipal — Moderate Syndemic Risk</title></circle>
+<circle cx="107.5" cy="333.4" r="6" fill="#8e44ad" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Upper Denkyira West — Critical Syndemic Burden</title></circle>
+<circle cx="113.5" cy="235.2" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Techiman North — Moderate Syndemic Risk</title></circle>
+<circle cx="152.3" cy="393.5" r="6" fill="#8e44ad" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Komenda Edina Eguafo Abirem Municipal — Critical Syndemic Burden</title></circle>
+<circle cx="87.1" cy="206.8" r="6" fill="#8e44ad" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Banda — Critical Syndemic Burden</title></circle>
+<circle cx="75.6" cy="321.2" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Sefwi Wiawso Municipal — High Syndemic Burden</title></circle>
+<circle cx="62.9" cy="222.3" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Jaman North — High Syndemic Burden</title></circle>
+<circle cx="74.6" cy="305.4" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Asunafo South — High Syndemic Burden</title></circle>
+<circle cx="102.3" cy="219.3" r="6" fill="#8e44ad" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Tain — Critical Syndemic Burden</title></circle>
+<circle cx="135.4" cy="250.6" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Nkoranza South Municipal — High Syndemic Burden</title></circle>
+<circle cx="166.5" cy="284.0" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Sekyere Kumawu — High Syndemic Burden</title></circle>
+<circle cx="99.7" cy="174.4" r="6" fill="#27ae60" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Bole — Low Syndemic Risk</title></circle>
+<circle cx="186.5" cy="284.2" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Asante Akim North Municipal — High Syndemic Burden</title></circle>
+<circle cx="165.5" cy="305.3" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Asante Akim Central Municipal — Moderate Syndemic Risk</title></circle>
+<circle cx="131.7" cy="213.6" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Kintampo North Municipal — High Syndemic Burden</title></circle>
+<circle cx="143.3" cy="296.4" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Asokore Mampong Municipal — Moderate Syndemic Risk</title></circle>
+<circle cx="176.8" cy="233.7" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Atebubu Amantin Municipal — High Syndemic Burden</title></circle>
+<circle cx="135.6" cy="298.1" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Kwadaso Municipal — Moderate Syndemic Risk</title></circle>
+<circle cx="253.8" cy="188.4" r="6" fill="#27ae60" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Kpandai — Low Syndemic Risk</title></circle>
+<circle cx="150.4" cy="296.1" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Ejisu Municipal — Moderate Syndemic Risk</title></circle>
+<circle cx="273.4" cy="254.3" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Biakoye — High Syndemic Burden</title></circle>
+<circle cx="113.2" cy="347.6" r="6" fill="#8e44ad" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Wassa Amenfi East Municipal — Critical Syndemic Burden</title></circle>
+<circle cx="175.7" cy="159.3" r="6" fill="#27ae60" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Central Gonja — Low Syndemic Risk</title></circle>
+<circle cx="249.8" cy="361.5" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Tema West Municipal — Moderate Syndemic Risk</title></circle>
+<circle cx="252.2" cy="358.5" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Ashaiman Municipal — Moderate Syndemic Risk</title></circle>
+<circle cx="186.8" cy="219.2" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Pru East — High Syndemic Burden</title></circle>
+<circle cx="249.4" cy="354.1" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Kpone Katamanso Municipal — Moderate Syndemic Risk</title></circle>
+<circle cx="195.9" cy="116.9" r="6" fill="#27ae60" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Savelugu Municipal — Low Syndemic Risk</title></circle>
+<circle cx="224.0" cy="98.4" r="6" fill="#27ae60" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Karaga — Low Syndemic Risk</title></circle>
+<circle cx="225.9" cy="156.1" r="6" fill="#27ae60" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>North East Gonja — Low Syndemic Risk</title></circle>
+<circle cx="271.8" cy="306.5" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>South Dayi — High Syndemic Burden</title></circle>
+<circle cx="248.2" cy="38.3" r="6" fill="#27ae60" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Tempane — Low Syndemic Risk</title></circle>
+<circle cx="252.7" cy="66.7" r="6" fill="#27ae60" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Yunyoo Nasuan — Low Syndemic Risk</title></circle>
+<circle cx="204.1" cy="121.0" r="6" fill="#27ae60" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Nanton — Low Syndemic Risk</title></circle>
+<circle cx="212.7" cy="372.2" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Gomoa Central — High Syndemic Burden</title></circle>
+<circle cx="161.3" cy="214.8" r="6" fill="#8e44ad" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Pru West — Critical Syndemic Burden</title></circle>
+<circle cx="61.9" cy="249.4" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Berekum West — Moderate Syndemic Risk</title></circle>
+<circle cx="112.4" cy="289.0" r="6" fill="#8e44ad" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Ahafo Ano South West — Critical Syndemic Burden</title></circle>
+<circle cx="111.6" cy="321.0" r="6" fill="#8e44ad" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Amansie South — Critical Syndemic Burden</title></circle>
+<circle cx="130.6" cy="286.0" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Atwima Nwabiagya North — Moderate Syndemic Risk</title></circle>
+<circle cx="141.6" cy="321.5" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Adansi North — Moderate Syndemic Risk</title></circle>
+<circle cx="140.6" cy="328.9" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Obuasi East — Moderate Syndemic Risk</title></circle>
+<circle cx="139.0" cy="276.1" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Afigya Kwabre North — High Syndemic Burden</title></circle>
+<circle cx="144.4" cy="298.6" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Oforikrom Municipal — Moderate Syndemic Risk</title></circle>
+<circle cx="140.7" cy="298.5" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Asokwa Municipal — Moderate Syndemic Risk</title></circle>
+<circle cx="140.6" cy="294.4" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Old Tafo Municipal — Moderate Syndemic Risk</title></circle>
+<circle cx="139.1" cy="294.6" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Suame Municipal — Moderate Syndemic Risk</title></circle>
+<circle cx="236.1" cy="335.6" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Juaben Municipal — High Syndemic Burden</title></circle>
+<circle cx="237.5" cy="367.4" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Ablekuma Central Municipal — Moderate Syndemic Risk</title></circle>
+<circle cx="240.6" cy="367.1" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Korle Klottey Municipal — Moderate Syndemic Risk</title></circle>
+<circle cx="235.9" cy="365.4" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Ablekuma North Municipal — Moderate Syndemic Risk</title></circle>
+<circle cx="240.5" cy="365.2" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Ayawaso North Municipal — High Syndemic Burden</title></circle>
+<circle cx="240.9" cy="365.7" r="6" fill="#8e44ad" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Ayawaso East Municipal — Critical Syndemic Burden</title></circle>
+<circle cx="231.0" cy="360.4" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Ga North Municipal — Moderate Syndemic Risk</title></circle>
+<circle cx="233.6" cy="367.4" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Weija Gbawe Municipal — Moderate Syndemic Risk</title></circle>
+<circle cx="249.2" cy="364.0" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Krowor Municipal — Moderate Syndemic Risk</title></circle>
+<circle cx="198.5" cy="195.5" r="6" fill="#27ae60" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>East Gonja Municipal — Low Syndemic Risk</title></circle>
+<circle cx="235.7" cy="368.1" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Ablekuma West Municipal — Moderate Syndemic Risk</title></circle>
+<circle cx="239.5" cy="365.1" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Ayawaso Central Municipal — Moderate Syndemic Risk</title></circle>
+<circle cx="318.6" cy="352.7" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Anloga — High Syndemic Burden</title></circle>
+<circle cx="290.8" cy="201.0" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Kwahu South Municipal — High Syndemic Burden</title></circle>
+<circle cx="197.1" cy="348.9" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Asene Manso Akroso — High Syndemic Burden</title></circle>
+<circle cx="183.8" cy="350.1" r="6" fill="#8e44ad" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Achiase — Critical Syndemic Burden</title></circle>
+<circle cx="245.6" cy="337.5" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Okere — High Syndemic Burden</title></circle>
+<circle cx="242.8" cy="330.4" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Yilo Krobo Municipal — High Syndemic Burden</title></circle>
+<circle cx="209.5" cy="327.2" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Atiwa West — High Syndemic Burden</title></circle>
+<circle cx="232.4" cy="331.6" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>New Juaben North Municipal — Moderate Syndemic Risk</title></circle>
+<circle cx="228.9" cy="309.4" r="6" fill="#8e44ad" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Fanteakwa North — Critical Syndemic Burden</title></circle>
+<circle cx="181.9" cy="317.3" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Birim North — Moderate Syndemic Risk</title></circle>
+<circle cx="261.4" cy="317.7" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Asuogyaman — Moderate Syndemic Risk</title></circle>
+<circle cx="197.1" cy="294.9" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Kwahu East — High Syndemic Burden</title></circle>
+<circle cx="202.9" cy="309.8" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Kwahu West Municipal — Moderate Syndemic Risk</title></circle>
+<circle cx="228.8" cy="351.2" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Nsawam Adoagyiri Municipal — Moderate Syndemic Risk</title></circle>
+<circle cx="197.8" cy="336.9" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Denkyembuor — Moderate Syndemic Risk</title></circle>
+<circle cx="192.4" cy="325.6" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Kwaebibirem Municipal — High Syndemic Burden</title></circle>
+<circle cx="221.9" cy="285.5" r="6" fill="#8e44ad" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Kwahu Afram Plains South — Critical Syndemic Burden</title></circle>
+<circle cx="255.0" cy="286.1" r="6" fill="#8e44ad" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Kwahu Afram Plains North — Critical Syndemic Burden</title></circle>
+<circle cx="222.3" cy="337.8" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Suhum Municipal — Moderate Syndemic Risk</title></circle>
+<circle cx="222.7" cy="343.4" r="6" fill="#8e44ad" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Ayensuano — Critical Syndemic Burden</title></circle>
+<circle cx="221.2" cy="329.4" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Abuakwa South Municipal — High Syndemic Burden</title></circle>
+<circle cx="216.3" cy="351.9" r="6" fill="#8e44ad" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Upper West Akim — Critical Syndemic Burden</title></circle>
+<circle cx="206.1" cy="345.7" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>West Akim Municipal — High Syndemic Burden</title></circle>
+<circle cx="212.2" cy="315.7" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Atiwa East — Moderate Syndemic Risk</title></circle>
+<circle cx="236.1" cy="335.6" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>New Juaben South Municipal — Moderate Syndemic Risk</title></circle>
+<circle cx="182.9" cy="343.8" r="6" fill="#e74c3c" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Birim South — High Syndemic Burden</title></circle>
+<circle cx="227.5" cy="325.6" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Abuakwa North Municipal — Moderate Syndemic Risk</title></circle>
+<circle cx="232.5" cy="317.2" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Fanteakwa South — Moderate Syndemic Risk</title></circle>
+<circle cx="183.2" cy="341.6" r="6" fill="#f39c12" opacity="0.85" stroke="#fff" stroke-width="0.5"><title>Birim Central Municipal — Moderate Syndemic Risk</title></circle>
+      </svg>
+    </div>
+    <div class="legend">
+      <div class="leg-item"><div class="leg-dot" style="background:#27ae60"></div>Low Syndemic Risk (n=50, SBI=1.44)</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#f39c12"></div>Moderate Risk (n=73, SBI=4.30)</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#e74c3c"></div>High Burden (n=89, SBI=4.94)</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#8e44ad"></div>Critical Burden (n=48, SBI=6.51)</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── COLUMN 3: SHAP + SLR + Policy + Conclusions ── -->
+<div class="col">
+  <div class="card">
+    <h2>SHAP Feature Importance (XGBoost — Mean |SHAP|)</h2>
+    <div class="shap-row">
+      <span class="shap-label">Higher Risk Sex</span>
+      <div class="shap-bar-track"><div class="shap-bar-fill" style="width:100.0%"></div></div>
+      <span class="shap-val">3.173</span>
+    </div><div class="shap-row">
+      <span class="shap-label">Poverty Rate</span>
+      <div class="shap-bar-track"><div class="shap-bar-fill" style="width:18.8%"></div></div>
+      <span class="shap-val">0.597</span>
+    </div><div class="shap-row">
+      <span class="shap-label">Unemployment Rate</span>
+      <div class="shap-bar-track"><div class="shap-bar-fill" style="width:17.5%"></div></div>
+      <span class="shap-val">0.555</span>
+    </div><div class="shap-row">
+      <span class="shap-label">Condom Negotiation</span>
+      <div class="shap-bar-track"><div class="shap-bar-fill" style="width:15.0%"></div></div>
+      <span class="shap-val">0.477</span>
+    </div><div class="shap-row">
+      <span class="shap-label">Condom Use</span>
+      <div class="shap-bar-track"><div class="shap-bar-fill" style="width:14.2%"></div></div>
+      <span class="shap-val">0.450</span>
+    </div>
+    <p style="font-size:.62rem;color:#888;margin-top:4px">Spatial CV AUC: 0.972 &plusmn; 0.031 (leave-one-region-out, 9 folds). Higher-risk sexual behaviour is the dominant determinant of syndemic risk classification.</p>
+  </div>
+
+  <div class="card">
+    <h2>Spatial Lag Regression (R&sup2;=0.684)</h2>
+    <div class="result-row"><span class="metric">Higher-risk sex behaviour (&beta;)</span><span class="value">+0.048 (p&lt;0.001)</span></div>
+    <div class="result-row"><span class="metric">Spatial lag — STI (&beta;)</span><span class="value">+0.129 (p=0.137)</span></div>
+    <div class="result-row"><span class="metric">Condom use (&beta;)</span><span class="value">&minus;0.021 (p=0.041)</span></div>
+    <div class="result-row"><span class="metric">Literacy rate (&beta;)</span><span class="value">+0.023 (p&lt;0.001)</span></div>
+    <p style="font-size:.62rem;color:#888;margin-top:4px">Higher-risk sexual behaviour (&#946;=+0.048, p&lt;0.001) and reduced condom use (&#946;=&#8722;0.021, p=0.041) are the significant modifiable determinants of district-level HIV prevalence. Adj R&sup2;=0.677.</p>
+  </div>
+
+  <div class="card">
+    <h2>Conclusions</h2>
+    <p>HIV and STI distributions in Ghana are not random — both exhibit strong positive spatial autocorrelation (Moran's I &gt;0.5) and significant bivariate co-clustering, with 35 High-High hotspot districts requiring immediate syndemic intervention.</p>
+    <p style="margin-top:5px">Higher-risk sexual behaviour is the primary modifiable determinant; condom use exerts a protective spatial effect. The Critical Syndemic Burden cluster (n=48 districts) displays HIV prevalence 6.5&times; higher than the Low Risk cluster, representing the priority tier for geographically targeted prevention resources.</p>
+    <p style="margin-top:5px"><strong>Limitations:</strong> Ecological design; district estimates are model-derived from regional DHS data; ecological fallacy precludes individual-level inference.</p>
+  </div>
+
+  <div class="card policy-box">
+    <h2 style="color:#b7791f;border-color:#f6b93b">Policy Implications</h2>
+    <p>Confirmed HIV&times;STI hotspot districts trigger obligations under:</p>
+    <p style="margin-top:4px">
+      <span class="law-badge">IHR 2005</span>
+      <span class="law-badge">ICESCR Art.12</span>
+      <span class="law-badge">Ghana Act 851</span>
+      <span class="law-badge">Ghana Act 852</span>
+    </p>
+    <p style="margin-top:6px">Priority actions: (1) district-targeted condom distribution in 35 HH hotspot districts; (2) VCT scale-up in Critical Syndemic Burden cluster; (3) mandatory STI notification enforcement (Act 851 §14) in districts with DHIMS2 reporting completeness &lt;80%; (4) NHIF package review for STI services in under-resourced hotspot districts.</p>
+  </div>
+
+  <div class="card">
+    <h2>References</h2>
+    <div class="refs">
+      1. UNAIDS. Global AIDS Update 2023. Geneva: UNAIDS; 2023.<br>
+      2. Kalichman SC, et al. <em>Sex Transm Infect.</em> 2011;87(3):235-40.<br>
+      3. Singer M, et al. <em>Lancet.</em> 2017;389(10072):941-50.<br>
+      4. Ghana Statistical Service. 2021 Population &amp; Housing Census. Accra: GSS; 2022.<br>
+      5. Chen T, Guestrin C. XGBoost. <em>Proc ACM KDD.</em> 2016:785-94.
+    </div>
+  </div>
+</div>
+
+</div><!-- end body -->
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-qr">
+    <svg xmlns="http://www.w3.org/2000/svg" width="90" height="90" viewBox="0 0 90 90">
+  <rect width="90" height="90" fill="white" rx="6"/>
+  <!-- Finder pattern TL -->
+  <rect x="5" y="5" width="25" height="25" fill="none" stroke="#1a3c5e" stroke-width="3"/>
+  <rect x="11" y="11" width="13" height="13" fill="#1a3c5e"/>
+  <!-- Finder pattern TR -->
+  <rect x="60" y="5" width="25" height="25" fill="none" stroke="#1a3c5e" stroke-width="3"/>
+  <rect x="66" y="11" width="13" height="13" fill="#1a3c5e"/>
+  <!-- Finder pattern BL -->
+  <rect x="5" y="60" width="25" height="25" fill="none" stroke="#1a3c5e" stroke-width="3"/>
+  <rect x="11" y="66" width="13" height="13" fill="#1a3c5e"/>
+  <!-- Data modules -->
+  <rect x="36" y="5" width="5" height="5" fill="#1a3c5e"/>
+  <rect x="44" y="5" width="5" height="5" fill="#1a3c5e"/>
+  <rect x="36" y="13" width="5" height="5" fill="#1a3c5e"/>
+  <rect x="52" y="5" width="5" height="5" fill="#1a3c5e"/>
+  <rect x="36" y="36" width="5" height="5" fill="#1a3c5e"/>
+  <rect x="44" y="36" width="5" height="5" fill="#1a3c5e"/>
+  <rect x="52" y="36" width="5" height="5" fill="#1a3c5e"/>
+  <rect x="60" y="36" width="5" height="5" fill="#1a3c5e"/>
+  <rect x="36" y="44" width="5" height="5" fill="#1a3c5e"/>
+  <rect x="52" y="44" width="5" height="5" fill="#1a3c5e"/>
+  <rect x="68" y="44" width="5" height="5" fill="#1a3c5e"/>
+  <rect x="36" y="52" width="5" height="5" fill="#1a3c5e"/>
+  <rect x="44" y="52" width="5" height="5" fill="#1a3c5e"/>
+  <rect x="60" y="52" width="5" height="5" fill="#1a3c5e"/>
+  <rect x="44" y="60" width="5" height="5" fill="#1a3c5e"/>
+  <rect x="52" y="60" width="5" height="5" fill="#1a3c5e"/>
+  <rect x="68" y="60" width="5" height="5" fill="#1a3c5e"/>
+  <rect x="36" y="68" width="5" height="5" fill="#1a3c5e"/>
+  <rect x="60" y="68" width="5" height="5" fill="#1a3c5e"/>
+  <rect x="68" y="68" width="5" height="5" fill="#1a3c5e"/>
+  <rect x="44" y="76" width="5" height="5" fill="#1a3c5e"/>
+  <rect x="60" y="76" width="5" height="5" fill="#1a3c5e"/>
+</svg>
+    <div>
+      <div style="color:#fff;font-weight:700;font-size:.65rem">GitHub Repository</div>
+      <div>github.com/valentineghanem-bit/<br>sti-hiv-syndemic-ghana-districts</div>
+    </div>
+  </div>
+  <div style="text-align:center">
+    <div style="color:#fff;font-weight:700;margin-bottom:2px">Ghanem VG &nbsp;|&nbsp; STI &amp; HIV Syndemic Burden: Geospatial Co-clustering and Behavioural Determinants in Ghana &nbsp;|&nbsp; 2026</div>
+    <div>Ghana COCOBOD Cocoa Clinic &nbsp;|&nbsp; Data: DHS 2014/2022 &middot; Census 2021 &middot; WHO GHO 2022 &nbsp;|&nbsp; STROBE-compliant</div>
+  </div>
+  <div style="text-align:right">
+    <div style="color:#fff;font-weight:700;margin-bottom:2px">Correspondence</div>
+    <div>valentineghanem@gmail.com</div>
+    <div>ORCID: 0009-0002-8332-0220</div>
+  </div>
+</div>
+
+</body>
+</html>
