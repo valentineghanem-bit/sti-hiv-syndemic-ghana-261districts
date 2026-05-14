@@ -136,7 +136,8 @@ All random seeds set explicitly (`random_state=42`). Run `pytest tests/ -v` to v
 
 ## Ethical Approval
 
-Ghana Health Service Ethics Review Board (protocol reference: COCOBOD-2026-001). All data aggregated at district level; no individual-level data used or redistributed.
+Ethical review was waived for this study as it relied solely on publicly accessible, de-identified secondary data from the GSS, DHS and WHO, with no individual clinical or patient-level data obtained or analyzed.
+
 
 ---
 
