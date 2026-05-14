@@ -160,4 +160,3 @@ MIT. See [LICENSE](LICENSE).
 Valentine Golden Ghanem | ORCID: 0009-0002-8332-0220
 Ghana COCOBOD Cocoa Clinic, Accra, Ghana
 valentineghanem@gmail.com
-
