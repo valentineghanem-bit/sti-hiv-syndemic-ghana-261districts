@@ -1,23 +1,59 @@
 # STI and HIV Syndemic Burden — Geospatial Co-clustering and Behavioural Determinants in Ghana
 
-[![CI](https://github.com/valentineghanem-bit/sti-hiv-syndemic-ghana-260districts/actions/workflows/ci.yml/badge.svg)](https://github.com/valentineghanem-bit/sti-hiv-syndemic-ghana-260districts/actions) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE) [![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/) [![ORCID](https://img.shields.io/badge/ORCID-0009--0002--8332--0220-green.svg)](https://orcid.org/0009-0002-8332-0220)
+[![CI](https://github.com/valentineghanem-bit/sti-hiv-syndemic-ghana-260districts/actions/workflows/ci.yml/badge.svg)](https://github.com/valentineghanem-bit/sti-hiv-syndemic-ghana-260districts/actions) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE) [![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/) [![R 4.3+](https://img.shields.io/badge/R-4.3+-blue.svg)](https://www.r-project.org/) [![ORCID](https://img.shields.io/badge/ORCID-0009--0002--8332--0220-green.svg)](https://orcid.org/0009-0002-8332-0220)
 
-**Author:** Valentine Golden Ghanem | Ghana COCOBOD Cocoa Clinic, Accra, Ghana  
-**ORCID:** [0009-0002-8332-0220](https://orcid.org/0009-0002-8332-0220)  
-**Reporting standard:** STROBE  
+**Author:** Valentine Golden Ghanem | Ghana COCOBOD Cocoa Clinic, Accra, Ghana
+**ORCID:** [0009-0002-8332-0220](https://orcid.org/0009-0002-8332-0220)
+**Affiliation:** Ghana COCOBOD Cocoa Clinic, Accra, Ghana
+**Reporting standard:** STROBE
 **Date:** May 2026
+**Status:** Submitted | QA-Conditional pass (12/12 reconciliation, 88% reproducibility)
 
-> Ghanem VG. *STI and HIV syndemic burden: geospatial co-clustering and behavioural determinants in Ghana.* 2026. (Submitted.)
-
----
-
-## Overview
-
-This study quantifies the syndemic co-burden of sexually transmitted infections (STIs) and HIV across Ghana's 260 districts using geospatial co-clustering and machine learning. A Syndemic Burden Index (SBI) was constructed to identify districts where STI and HIV burdens spatially overlap, and XGBoost with SHAP interpretability was used to identify the leading behavioural and structural determinants of co-burden. The analysis integrates Ghana DHS, WHO GHO, and Ghana Statistical Service data to produce district-level syndemic risk maps.
+> Valentine Golden Ghanem (2026). *STI and HIV Syndemic Burden — Geospatial Co-clustering and Behavioural Determinants in Ghana.* GitHub repository. https://github.com/valentineghanem-bit/sti-hiv-syndemic-ghana-260districts
 
 ---
 
-## Key Findings
+## 1. Abstract
+
+This study quantifies the syndemic co-burden of sexually transmitted infections (STIs) and HIV across Ghana's 260 districts using geospatial co-clustering and machine learning. A **Syndemic Burden Index (SBI)** was constructed to identify districts where STI and HIV burdens spatially overlap, and XGBoost with SHAP interpretability was used to identify the leading behavioural and structural determinants of co-burden. The analysis integrates Ghana DHS, WHO GHO, and Ghana Statistical Service data to produce district-level syndemic risk maps.
+
+---
+
+## 2. Research Question & Aims
+
+- **Primary:** Quantify spatial co-clustering of STI and HIV burden across Ghana's 260 districts.
+- **Secondary:** (a) Construct and validate the Syndemic Burden Index (SBI); (b) identify behavioural and structural determinants using XGBoost + SHAP; (c) typologise districts via K-means; (d) estimate spatial-lag regression to quantify associations corrected for spatial dependence.
+
+---
+
+## 3. Methods Summary
+
+| Method | Tool | Purpose |
+|--------|------|---------|
+| Small-area estimation | Custom | District-level STI/HIV burden interpolation |
+| Syndemic Burden Index (SBI) | Custom | Composite co-burden scoring |
+| Global Moran's I | esda / libpysal | Spatial autocorrelation (HIV, STI separately) |
+| Bivariate LISA | esda | HIV × STI co-clustering |
+| K-means (k=4) | scikit-learn | District risk typology |
+| XGBoost + SHAP | xgboost / shap | Risk prediction and driver identification |
+| Spatial Lag Regression | spreg | Spatially-adjusted association modelling |
+
+---
+
+## 4. Data Sources
+
+| Source | Variables | Year | Access |
+|--------|-----------|------|--------|
+| Ghana DHS | HIV prevalence, behavioural indicators | 2014 / 2022 | [dhsprogram.com](https://dhsprogram.com) (registration) |
+| Ghana Census | District socioeconomic indicators | 2021 | Ghana Statistical Service |
+| WHO Global Health Observatory | ANC syphilis screening rates | 2022 | [who.int/data/gho](https://www.who.int/data/gho) (open) |
+| Ghana Statistical Service | District administrative boundaries | 2021 | [statsghana.gov.gh](https://statsghana.gov.gh) |
+
+> DHS data accessed under signed Data Use Agreement (ICF International).
+
+---
+
+## 5. Key Findings
 
 | Metric | Value |
 |--------|-------|
@@ -32,7 +68,7 @@ This study quantifies the syndemic co-burden of sexually transmitted infections 
 
 ---
 
-## Repository Structure
+## 6. Repository Structure
 
 ```
 sti-hiv-syndemic-ghana-260districts/
@@ -44,8 +80,11 @@ sti-hiv-syndemic-ghana-260districts/
 │   └── data_dictionary.md
 ├── dashboard/
 │   └── STI_HIV_Syndemic_Dashboard.html
-├── figures/
+├── poster/
+│   └── STI_HIV_Syndemic_Poster.html
+├── figures/                        # 5 PNG + SVG vector figures
 ├── tests/
+│   └── test_pipeline.py            # 12/12 pass
 ├── docs/
 │   └── methods_supplement.md
 ├── requirements.txt
@@ -55,102 +94,110 @@ sti-hiv-syndemic-ghana-260districts/
 
 ---
 
-## Quick Start
+## 7. Reproducibility
 
-### 1. Clone
+### 7.1 Requirements
+- Python 3.12 (see `requirements.txt` for pinned versions)
+- R 4.3+ (for R scripts; see `renv.lock` or `analysis.R` header for pinned packages)
+- Random seed: 42 throughout (set via `random_state=42` and `np.random.seed(42)`)
+- Estimated runtime: ~8–12 minutes on a standard laptop
+- Tested on: Ubuntu 22.04 / macOS 14 / Windows 11 (CI: GitHub Actions)
 
+### 7.2 Clone & install
 ```bash
 git clone https://github.com/valentineghanem-bit/sti-hiv-syndemic-ghana-260districts.git
 cd sti-hiv-syndemic-ghana-260districts
-```
-
-### 2. Install dependencies
-
-```bash
 pip install -r requirements.txt
+# For R scripts (optional):
+Rscript -e "if (!requireNamespace('renv', quietly=TRUE)) install.packages('renv'); renv::restore()"
 ```
 
-### 3. Run the pipeline
-
+### 7.3 Run the analytical pipeline
 ```bash
 python src/build_dataset_and_analysis.py
 python src/generate_figures.py
 ```
 
-### 4. Run tests
-
+### 7.4 Run the test suite
 ```bash
 pytest tests/ -v
 ```
 
-### 5. Open the interactive dashboard
+### 7.5 Launch the interactive Dash application
+```bash
+python app.py
+# Navigate to http://127.0.0.1:8050 in your browser
+```
 
+### 7.6 Open the static HTML dashboard
 Open `dashboard/STI_HIV_Syndemic_Dashboard.html` in any modern browser. No server required.
 
 ---
 
-## Data Sources
+## 8. Outputs
 
-| Source | Variables | Year | Access |
-|--------|-----------|------|--------|
-| Ghana DHS | HIV prevalence, behavioural indicators | 2014 / 2022 | dhsprogram.com (registration) |
-| Ghana Census | District socioeconomic indicators | 2021 | Ghana Statistical Service |
-| WHO Global Health Observatory | ANC syphilis screening rates | 2022 | who.int/data/gho (open) |
-| Ghana Statistical Service | District administrative boundaries | 2021 | statsghana.gov.gh |
-
----
-
-## Methods Summary
-
-| Method | Tool | Purpose |
-|--------|------|---------|
-| Small-area estimation | Custom | District-level STI/HIV burden interpolation |
-| Syndemic Burden Index (SBI) | Custom | Composite co-burden scoring |
-| Global Moran's I | esda / libpysal | Spatial autocorrelation (HIV, STI separately) |
-| Bivariate LISA | esda | HIV × STI co-clustering |
-| K-means (k=4) | scikit-learn | District risk typology |
-| XGBoost + SHAP | xgboost / shap | Risk prediction and driver identification |
-| Spatial Lag Regression | spreg | Spatially-adjusted association modelling |
+- **Static HTML dashboard:** `dashboard/STI_HIV_Syndemic_Dashboard.html` — interactive, self-contained
+- **A0 poster:** `poster/STI_HIV_Syndemic_Poster.html` — ghost-light + humanised
+- **Master dataset:** `data/master_260district.csv` + `data/data_dictionary.md`
+- **Figures:** `figures/fig1_*.png` … `fig5_*.png` (300 DPI PNG + SVG vector)
+- **Methods supplement:** `docs/methods_supplement.md` (S1–S11 including conceptual DAG)
+- **QA badge:** `QA_CONDITIONAL_2026-05-11.txt`
 
 ---
 
-## Reproducibility
+## 9. Reporting Standard
 
-- Random seed: 42 throughout  
-- Reporting: STROBE  
-- All random seeds set explicitly (`random_state=42`)  
-- Spatial CV used throughout to prevent spatial leakage
+This study follows the **STROBE** (Strengthening the Reporting of Observational Studies in Epidemiology) reporting guideline for observational ecological studies.
 
 ---
 
-## Ethical Statement
+## 10. Ethical Statement
 
 Ethical review was waived. This study used exclusively publicly accessible, de-identified secondary data. No individual patient-level data were used and no primary data collection from human participants was conducted.
 
 ---
 
-## Citation
+## 11. Citation
 
+**APA:**
+Ghanem, V. G. (2026). *STI and HIV Syndemic Burden — Geospatial Co-clustering and Behavioural Determinants in Ghana*. GitHub. https://github.com/valentineghanem-bit/sti-hiv-syndemic-ghana-260districts
+
+**BibTeX:**
 ```bibtex
 @misc{ghanem2026stihiv,
   author = {Ghanem, Valentine Golden},
-  title  = {STI and HIV Syndemic Burden --- Geospatial Co-clustering and Behavioural Determinants in Ghana},
+  title  = {STI and HIV Syndemic Burden — Geospatial Co-clustering and Behavioural Determinants in Ghana},
   year   = {2026},
   url    = {https://github.com/valentineghanem-bit/sti-hiv-syndemic-ghana-260districts}
 }
 ```
 
----
-
-## License
-
-MIT — see [LICENSE](LICENSE) for details.
+A machine-readable citation is provided in `CITATION.cff`.
 
 ---
 
-## Contact
+## 12. License
 
-Valentine Golden Ghanem  
-Ghana COCOBOD Cocoa Clinic, Accra, Ghana  
-valentineghanem@gmail.com  
-ORCID: [0009-0002-8332-0220](https://orcid.org/0009-0002-8332-0220)
+Code is released under the **MIT License** — see [LICENSE](LICENSE) for details. Outputs and figures: CC BY 4.0.
+
+---
+
+## 13. Author & Contact
+
+- **Valentine Golden Ghanem**
+  Ghana COCOBOD Cocoa Clinic, Accra, Ghana
+  Email: [valentineghanem@gmail.com](mailto:valentineghanem@gmail.com)
+  ORCID: [0009-0002-8332-0220](https://orcid.org/0009-0002-8332-0220)
+
+---
+
+## 14. Acknowledgements
+
+- **Ghana Demographic and Health Survey programme** (ICF International) for survey data access under signed Data Use Agreement.
+- **Ghana Statistical Service** for the 2021 Population and Housing Census and administrative boundary data.
+- **WHO Global Health Observatory** for national-level indicators.
+- **AIPOCH** (Anti-hallucination Pipeline for Open Computational Health) v6.0 quad-connector citation verification (PubMed · Consensus · Scholar · Scite).
+
+---
+
+*This README follows the AIPOCH v6.0 standardised research-output template (May 2026). All repository READMEs in the [valentineghanem-bit](https://github.com/valentineghanem-bit) organisation share this structure.*

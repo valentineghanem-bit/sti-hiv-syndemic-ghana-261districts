@@ -1,3 +1,40 @@
+﻿# Line endings â€” normalise to LF in the repo
+* text=auto eol=lf
+
+# Source code â€” let GitHub count these in language stats
+*.py text diff=python
+*.R text diff=r
+*.r text diff=r
+*.Rmd text
+*.ipynb text
+
+# Generated artefacts â€” exclude from language stats so Python/R show as primary languages
+*.html linguist-generated=true
+*.css linguist-generated=true
+*.js linguist-generated=true
+dashboard/* linguist-generated=true
+poster/* linguist-generated=true
+outputs/*.html linguist-generated=true
+docs/*.html linguist-generated=true
+figures/*.html linguist-generated=true
+
+# Data files â€” exclude from language stats
+*.csv linguist-detectable=false
+*.tsv linguist-detectable=false
+*.json linguist-detectable=false
+*.geojson linguist-detectable=false
+
+# Binary
+*.png binary
+*.jpg binary
+*.svg binary
+*.pdf binary
+*.xlsx binary
+*.xls binary
+*.pkl binary
+*.rds binary
+
+# --- Git LFS tracking (preserved from prior config) ---
 # Git LFS tracking for large binary and vector files
 *.svg filter=lfs diff=lfs merge=lfs -text
 *.png filter=lfs diff=lfs merge=lfs -text
