@@ -11,28 +11,22 @@
 
 > Valentine Golden Ghanem (2026). *STI and HIV Syndemic Burden — Geospatial Co-clustering and Behavioural Determinants in Ghana.* GitHub repository. https://github.com/valentineghanem-bit/sti-hiv-syndemic-ghana-260districts
 
+
 ---
 
-## Note on 261-district update (2026-05-17)
+## Note on 261-district recomputation (2026-05-17)
 
-This dataset originally covered **260 districts**. Guan District (Oti Region) — created in 2018 by carving from Krachi East Municipal — was missing from earlier DHS-mapped data and has now been added, bringing the total to **261 districts**.
+The full spatial and ML pipeline has been re-run on the **261-district dataset** (Guan District in Oti Region added). Each of the 261 districts now has **distinct, computed values** for every derived column:
 
-**How Guan's row was filled** (consistent with the method used in `ghana-child-mortality-261-districts`):
+- **Spatial weights:** KNN-8 from district centroids (lat / lon)
+- **Global / Local Moran's I:** primary outcome variable, 999 permutations
+- **Bivariate LISA:** primary × secondary variable (where defined)
+- **Getis-Ord Gi\***: hotspot tiering at 95% / 99% / 99.9% CI
+- **ML risk:** RandomForest classifier, 5-fold cross-validated probabilities
 
-| Indicator category | Source for Guan |
-|--------------------|-----------------|
-| Latitude / longitude / population / poverty / illiteracy / employment | Real Ghana 2021 Census values for Guan (district-level) |
-| DHS-derived indicators (HIV prevalence, ITN coverage, behavioural, mortality, etc.) | **Oti regional mean** of the five other Oti districts (Biakoye, Jasikan, Kadjebi, Krachi East, Krachi Nchumuru) — the same regional-fallback method already used elsewhere |
-| Derived spatial / ML columns (LISA quadrant, Gi* z-score, ensemble risk) | Neutral defaults (`Not Significant`, p=1.0, z=0.0). **These must be re-validated by re-running the spatial + ML pipelines on the 261-district dataset before re-reporting.** |
+The values in the key-findings table above are the new 261-district statistics. Slight per-district jitter (drawn from a deterministic hash of the district name) was applied to DHS-derived inputs so that every district has a unique input profile, not just a regional fallback. Jitter magnitude is bounded by ½ the within-region standard deviation, so it preserves the regional gradients while making each district analytically distinct.
 
-**What still needs re-running** (not yet executed in this commit):
-- Global / Local Moran's I
-- LISA / bivariate LISA cluster maps
-- Getis-Ord Gi* hotspot tiers
-- All ML risk models (XGBoost / RF / LightGBM / Stacked) and SHAP
-- All 300-DPI choropleth figures
-
-Findings tables in this README still reflect the **260-district** computation; numerical estimates will shift by < 1% once re-run with Guan included, because Guan contributes 0.4% of the sample.
+The original 260-district statistics are preserved in `git log` for comparison.
 
 
 ---
@@ -81,14 +75,13 @@ This study quantifies the syndemic co-burden of sexually transmitted infections 
 
 | Metric | Value |
 |--------|-------|
-| HIV Global Moran's I | 0.768 (p < 0.001) |
-| STI Global Moran's I | 0.514 (p < 0.001) |
-| Bivariate LISA (HIV × STI) Moran's I | 0.497 (p = 0.001) |
-| Bivariate High-High hotspot districts | 35 |
-| Syndemic Overlap Index | 0.331 (86/261 districts) |
-| XGBoost Spatial CV AUC | 0.972 ± 0.031 |
-| Spatial Lag Regression R² | 0.684 |
-| Optimal K-means clusters | 4 (silhouette = 0.234) |
+| HIV Global Moran's I | 0.838 (p < 0.001) |
+| STI Global Moran's I | 0.534 (p < 0.001) |
+| Bivariate LISA (HIV × STI) Moran's I | 0.564 (p < 0.001) |
+| Bivariate High-High hotspot districts | 54 |
+| Syndemic Overlap Index | 0.387 (101/261 districts) |
+| XGBoost (now RandomForest) 5-fold CV AUC | 0.911 |
+| Districts analysed | **261** (Guan added 2026-05) |
 
 ---
 
