@@ -1,6 +1,6 @@
 """
 STI-HIV Syndemic Analysis Pipeline — Ghana 260 Districts
-Valentine Golden Ghanem | AIPOCH v6.0 | May 2026
+Valentine Golden Ghanem | May 2026
 """
 import json, warnings, os, re, pickle
 import numpy as np

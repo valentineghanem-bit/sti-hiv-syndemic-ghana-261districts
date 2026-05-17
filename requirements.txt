@@ -1,5 +1,5 @@
 # STI–HIV Syndemic Analysis — Ghana 260 Districts
-# Pinned dependencies | AIPOCH v6.0 | May 2026
+# Pinned dependencies | May 2026
 numpy==2.3.3
 pandas==2.3.3
 geopandas==1.1.3

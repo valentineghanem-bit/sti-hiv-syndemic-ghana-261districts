@@ -141,7 +141,23 @@ Open `dashboard/STI_HIV_Syndemic_Dashboard.html` in any modern browser. No serve
 - **Master dataset:** `data/master_260district.csv` + `data/data_dictionary.md`
 - **Figures:** `figures/fig1_*.png` … `fig5_*.png` (300 DPI PNG + SVG vector)
 - **Methods supplement:** `docs/methods_supplement.md` (S1–S11 including conceptual DAG)
-- **QA badge:** `QA_CONDITIONAL_2026-05-11.txt`
+
+---
+
+## 8a. Downloadable artefacts (HTML)
+
+Both the interactive dashboard and the conference poster are committed to the repository as **self-contained HTML files** — no server, no build step. They can be:
+
+- **Viewed in browser:** open the rendered preview, or clone the repo and open locally
+- **Downloaded:** right-click → *Save link as*, or use the raw URL
+
+| Artefact | View on GitHub | Live preview | Direct download (raw HTML) |
+|----------|----------------|--------------|------------------------------|
+| Interactive dashboard | [`STI_HIV_Syndemic_Dashboard.html`](https://github.com/valentineghanem-bit/sti-hiv-syndemic-ghana-260districts/blob/main/dashboard/STI_HIV_Syndemic_Dashboard.html) | [Open preview](https://htmlpreview.github.io/?https://github.com/valentineghanem-bit/sti-hiv-syndemic-ghana-260districts/blob/main/dashboard/STI_HIV_Syndemic_Dashboard.html) | [Download](https://raw.githubusercontent.com/valentineghanem-bit/sti-hiv-syndemic-ghana-260districts/main/dashboard/STI_HIV_Syndemic_Dashboard.html) |
+| Conference poster | [`STI_HIV_Syndemic_Poster.html`](https://github.com/valentineghanem-bit/sti-hiv-syndemic-ghana-260districts/blob/main/poster/STI_HIV_Syndemic_Poster.html) | [Open preview](https://htmlpreview.github.io/?https://github.com/valentineghanem-bit/sti-hiv-syndemic-ghana-260districts/blob/main/poster/STI_HIV_Syndemic_Poster.html) | [Download](https://raw.githubusercontent.com/valentineghanem-bit/sti-hiv-syndemic-ghana-260districts/main/poster/STI_HIV_Syndemic_Poster.html) |
+
+> **Tip:** the dashboard works fully offline once downloaded. The poster is print-ready at A0 (841 × 1189 mm).
+
 
 ---
 
@@ -196,8 +212,6 @@ Code is released under the **MIT License** — see [LICENSE](LICENSE) for detail
 - **Ghana Demographic and Health Survey programme** (ICF International) for survey data access under signed Data Use Agreement.
 - **Ghana Statistical Service** for the 2021 Population and Housing Census and administrative boundary data.
 - **WHO Global Health Observatory** for national-level indicators.
-- **AIPOCH** (Anti-hallucination Pipeline for Open Computational Health) v6.0 quad-connector citation verification (PubMed · Consensus · Scholar · Scite).
 
 ---
 
-*This README follows the AIPOCH v6.0 standardised research-output template (May 2026). All repository READMEs in the [valentineghanem-bit](https://github.com/valentineghanem-bit) organisation share this structure.*

@@ -1,6 +1,6 @@
 """
 Figure Generation — STI-HIV Syndemic Analysis | Ghana 260 Districts
-Valentine Golden Ghanem | AIPOCH v6.0 | May 2026
+Valentine Golden Ghanem | May 2026
 Produces 5 publication-quality figures (300 DPI, SVG+PNG)
 """
 import pickle, json, warnings, os
