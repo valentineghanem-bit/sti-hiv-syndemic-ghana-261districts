@@ -2,14 +2,20 @@
 * text=auto eol=lf
 
 # Source code â€” counted in GitHub language statistics
-*.py text diff=python
-*.R text diff=r
-*.r text diff=r
-*.Rmd text
-*.ipynb text
-*.html text
-*.css text
-*.js text
+*.py text diff=python linguist-detectable=true
+*.R text diff=r linguist-detectable=true linguist-language=R
+*.r text diff=r linguist-detectable=true linguist-language=R
+*.Rmd text linguist-detectable=true linguist-language=R
+*.ipynb text linguist-detectable=true linguist-language=Jupyter
+*.html text linguist-detectable=true
+*.css text linguist-detectable=true
+*.js text linguist-detectable=true
+
+# Poster HTML files â€” generated print artefacts (typically 1-9 MB of embedded
+# base64 images and styling), exclude so they don't dominate language stats.
+poster/** linguist-generated=true
+**/*poster*.html linguist-generated=true
+**/*Poster*.html linguist-generated=true
 
 # Data files â€” exclude from language stats (not source code)
 *.csv linguist-detectable=false
