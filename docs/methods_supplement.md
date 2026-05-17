@@ -6,11 +6,11 @@
 
 ### S1. Small-Area Estimation
 
-Regional HIV prevalence and behavioural indicator estimates from the Ghana DHS (2014, 2022) were disaggregated to 260 health districts using model-based small-area estimation. Auxiliary covariates from the Ghana Population and Housing Census 2021 — district-level poverty index and adult literacy rate — were used to allocate regional estimates. Controlled Gaussian noise (sigma = 0.05 × regional mean) was introduced to reflect within-region heterogeneity while preserving regional totals. All estimates were validated against published regional DHS point estimates.
+Regional HIV prevalence and behavioural indicator estimates from the Ghana DHS (2014, 2022) were disaggregated to 261 health districts using model-based small-area estimation. Auxiliary covariates from the Ghana Population and Housing Census 2021 — district-level poverty index and adult literacy rate — were used to allocate regional estimates. Controlled Gaussian noise (sigma = 0.05 × regional mean) was introduced to reflect within-region heterogeneity while preserving regional totals. All estimates were validated against published regional DHS point estimates.
 
 ### S2. STI Incidence Proxy Construction
 
-A direct district-level STI incidence series is not available from routine DHIMS2 reporting at the 260-district level. The STI proxy was constructed as:
+A direct district-level STI incidence series is not available from routine DHIMS2 reporting at the 261-district level. The STI proxy was constructed as:
 
 ```
 STI_proxy = ANC_syphilis_rate × (higher_risk_sex / condom_use) × behavioural_multiplier
@@ -30,7 +30,7 @@ This yields a composite indicator on a 0–10 scale where higher values denote g
 
 ### S4. Spatial Weights Matrix Construction
 
-Queen contiguity spatial weights were constructed for all 260 districts using the Ghana health district boundary shapefile (Ghana Statistical Service, 2021). Three districts had no Queen contiguous neighbours (island districts); KNN-5 weights were applied for these districts. All weights were row-standardised (W_ij = w_ij / sum_j(w_ij)).
+Queen contiguity spatial weights were constructed for all 261 districts using the Ghana health district boundary shapefile (Ghana Statistical Service, 2021). Three districts had no Queen contiguous neighbours (island districts); KNN-5 weights were applied for these districts. All weights were row-standardised (W_ij = w_ij / sum_j(w_ij)).
 
 ### S5. Global Moran's I
 
@@ -40,7 +40,7 @@ Spatial autocorrelation was assessed using Global Moran's I:
 I = (n / S0) × (z'Wz / z'z)
 ```
 
-where z is the mean-centred outcome vector, W is the row-standardised spatial weights matrix, S0 = sum(w_ij), and n = 260. Inference used a permutation-based approach (999 permutations). Results: HIV I = 0.768 (z = 18.82, p < 0.001); STI I = 0.514 (p < 0.001); SBI I = 0.675 (p < 0.001).
+where z is the mean-centred outcome vector, W is the row-standardised spatial weights matrix, S0 = sum(w_ij), and n=261. Inference used a permutation-based approach (999 permutations). Results: HIV I = 0.768 (z = 18.82, p < 0.001); STI I = 0.514 (p < 0.001); SBI I = 0.675 (p < 0.001).
 
 ### S6. Bivariate LISA
 

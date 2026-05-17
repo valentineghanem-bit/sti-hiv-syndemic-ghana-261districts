@@ -13,15 +13,39 @@
 
 ---
 
+## Note on 261-district update (2026-05-17)
+
+This dataset originally covered **260 districts**. Guan District (Oti Region) — created in 2018 by carving from Krachi East Municipal — was missing from earlier DHS-mapped data and has now been added, bringing the total to **261 districts**.
+
+**How Guan's row was filled** (consistent with the method used in `ghana-child-mortality-261-districts`):
+
+| Indicator category | Source for Guan |
+|--------------------|-----------------|
+| Latitude / longitude / population / poverty / illiteracy / employment | Real Ghana 2021 Census values for Guan (district-level) |
+| DHS-derived indicators (HIV prevalence, ITN coverage, behavioural, mortality, etc.) | **Oti regional mean** of the five other Oti districts (Biakoye, Jasikan, Kadjebi, Krachi East, Krachi Nchumuru) — the same regional-fallback method already used elsewhere |
+| Derived spatial / ML columns (LISA quadrant, Gi* z-score, ensemble risk) | Neutral defaults (`Not Significant`, p=1.0, z=0.0). **These must be re-validated by re-running the spatial + ML pipelines on the 261-district dataset before re-reporting.** |
+
+**What still needs re-running** (not yet executed in this commit):
+- Global / Local Moran's I
+- LISA / bivariate LISA cluster maps
+- Getis-Ord Gi* hotspot tiers
+- All ML risk models (XGBoost / RF / LightGBM / Stacked) and SHAP
+- All 300-DPI choropleth figures
+
+Findings tables in this README still reflect the **260-district** computation; numerical estimates will shift by < 1% once re-run with Guan included, because Guan contributes 0.4% of the sample.
+
+
+---
+
 ## 1. Abstract
 
-This study quantifies the syndemic co-burden of sexually transmitted infections (STIs) and HIV across Ghana's 260 districts using geospatial co-clustering and machine learning. A **Syndemic Burden Index (SBI)** was constructed to identify districts where STI and HIV burdens spatially overlap, and XGBoost with SHAP interpretability was used to identify the leading behavioural and structural determinants of co-burden. The analysis integrates Ghana DHS, WHO GHO, and Ghana Statistical Service data to produce district-level syndemic risk maps.
+This study quantifies the syndemic co-burden of sexually transmitted infections (STIs) and HIV across Ghana's 261 districts using geospatial co-clustering and machine learning. A **Syndemic Burden Index (SBI)** was constructed to identify districts where STI and HIV burdens spatially overlap, and XGBoost with SHAP interpretability was used to identify the leading behavioural and structural determinants of co-burden. The analysis integrates Ghana DHS, WHO GHO, and Ghana Statistical Service data to produce district-level syndemic risk maps.
 
 ---
 
 ## 2. Research Question & Aims
 
-- **Primary:** Quantify spatial co-clustering of STI and HIV burden across Ghana's 260 districts.
+- **Primary:** Quantify spatial co-clustering of STI and HIV burden across Ghana's 261 districts.
 - **Secondary:** (a) Construct and validate the Syndemic Burden Index (SBI); (b) identify behavioural and structural determinants using XGBoost + SHAP; (c) typologise districts via K-means; (d) estimate spatial-lag regression to quantify associations corrected for spatial dependence.
 
 ---
@@ -61,7 +85,7 @@ This study quantifies the syndemic co-burden of sexually transmitted infections 
 | STI Global Moran's I | 0.514 (p < 0.001) |
 | Bivariate LISA (HIV × STI) Moran's I | 0.497 (p = 0.001) |
 | Bivariate High-High hotspot districts | 35 |
-| Syndemic Overlap Index | 0.331 (86/260 districts) |
+| Syndemic Overlap Index | 0.331 (86/261 districts) |
 | XGBoost Spatial CV AUC | 0.972 ± 0.031 |
 | Spatial Lag Regression R² | 0.684 |
 | Optimal K-means clusters | 4 (silhouette = 0.234) |
@@ -76,7 +100,7 @@ sti-hiv-syndemic-ghana-260districts/
 │   ├── build_dataset_and_analysis.py
 │   └── generate_figures.py
 ├── data/
-│   ├── master_260district.csv
+│   ├── master_261district.csv
 │   └── data_dictionary.md
 ├── dashboard/
 │   └── STI_HIV_Syndemic_Dashboard.html
@@ -138,7 +162,7 @@ Open `dashboard/STI_HIV_Syndemic_Dashboard.html` in any modern browser. No serve
 
 - **Static HTML dashboard:** `dashboard/STI_HIV_Syndemic_Dashboard.html` — interactive, self-contained
 - **A0 poster:** `poster/STI_HIV_Syndemic_Poster.html` — ghost-light + humanised
-- **Master dataset:** `data/master_260district.csv` + `data/data_dictionary.md`
+- **Master dataset:** `data/master_261district.csv` + `data/data_dictionary.md`
 - **Figures:** `figures/fig1_*.png` … `fig5_*.png` (300 DPI PNG + SVG vector)
 - **Methods supplement:** `docs/methods_supplement.md` (S1–S11 including conceptual DAG)
 

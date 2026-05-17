@@ -1,21 +1,21 @@
 """
 Unit tests for STI-HIV Syndemic Ghana pipeline.
-Uses master_260district.csv as the validation target.
+Uses master_261district.csv as the validation target.
 Run: pytest tests/ -v
 """
 import os, pytest
 import pandas as pd
 import numpy as np
 
-DATA_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "master_260district.csv")
+DATA_PATH = os.path.join(os.path.dirname(__file__), "..", "data", "master_261district.csv")
 
 @pytest.fixture(scope="module")
 def df():
     return pd.read_csv(DATA_PATH)
 
 def test_row_count(df):
-    """Dataset must have exactly 260 districts."""
-    assert len(df) == 260, f"Expected 260 rows, got {len(df)}"
+    """Dataset must have exactly 261 districts."""
+    assert len(df) == 261, f"Expected 260 rows, got {len(df)}"
 
 def test_required_columns(df):
     required = [

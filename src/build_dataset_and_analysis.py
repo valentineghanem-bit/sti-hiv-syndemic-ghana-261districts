@@ -67,7 +67,7 @@ master['master_reg'] = master['region'].str.upper().str.strip()
 print(f"[1] Master Sheet: {len(master)} districts, {master['region'].nunique()} regions")
 
 # ─── 2. LOAD GEOJSON ─────────────────────────────────────────
-gdf_raw = gpd.read_file(f'{UPLOAD}/Ghana_New_260_District.geojson')
+gdf_raw = gpd.read_file(f'{UPLOAD}/Ghana_New_261_District.geojson')
 gdf_raw['gj_key'] = gdf_raw['DISTRICT'].apply(clean_name)
 gdf_raw['gj_reg'] = gdf_raw['REGION'].str.upper().str.strip()
 print(f"[2] GeoJSON: {len(gdf_raw)} districts")
@@ -436,7 +436,7 @@ save_cols = ['district','region','lat','lon','total_pop',
              'lisa_hiv_q','lisa_hiv_sig','lisa_sti_q','lisa_sti_sig',
              'lisa_bv_q','lisa_bv_sig','gi_zscore','gi_pval','hotspot','coldspot',
              'syndemic_cluster','cluster_label','high_syndemic','critical_cluster']
-gdf[save_cols].to_csv(f'{OUT}/master_260district.csv', index=False)
+gdf[save_cols].to_csv(f'{OUT}/master_261district.csv', index=False)
 print(f"\n[16] CSV saved: {len(gdf)} rows × {len(save_cols)} cols")
 
 # ─── 17. RESULTS JSON ─────────────────────────────────────────

@@ -12,7 +12,7 @@ suppressPackageStartupMessages({
 set.seed(42)
 
 cat("── Loading data ──────────────────────────────────────────────────────\n")
-df <- read_csv("data/master_260district.csv", show_col_types = FALSE)
+df <- read_csv("data/master_261district.csv", show_col_types = FALSE)
 df <- df |> filter(!is.na(lat) & !is.na(lon))
 cat(sprintf("Loaded: %d districts × %d variables\n", nrow(df), ncol(df)))
 

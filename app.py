@@ -12,7 +12,7 @@ import dash
 from dash import dcc, html, Input, Output, dash_table
 import dash_bootstrap_components as dbc
 
-DATA = os.path.join(os.path.dirname(__file__), "data", "master_260district.csv")
+DATA = os.path.join(os.path.dirname(__file__), "data", "master_261district.csv")
 df = pd.read_csv(DATA)
 
 # Normalise coordinate columns
