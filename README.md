@@ -1,6 +1,6 @@
 # STI and HIV Syndemic Burden — Geospatial Co-clustering and Behavioural Determinants in Ghana
 
-[![CI](https://github.com/valentineghanem-bit/sti-hiv-syndemic-ghana-260districts/actions/workflows/ci.yml/badge.svg)](https://github.com/valentineghanem-bit/sti-hiv-syndemic-ghana-260districts/actions) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE) [![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/) [![R 4.3+](https://img.shields.io/badge/R-4.3+-blue.svg)](https://www.r-project.org/) [![ORCID](https://img.shields.io/badge/ORCID-0009--0002--8332--0220-green.svg)](https://orcid.org/0009-0002-8332-0220)
+[![CI](https://github.com/valentineghanem-bit/sti-hiv-syndemic-ghana-261districts/actions/workflows/ci.yml/badge.svg)](https://github.com/valentineghanem-bit/sti-hiv-syndemic-ghana-261districts/actions) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE) [![Python 3.12](https://img.shields.io/badge/python-3.12-blue.svg)](https://www.python.org/) [![R 4.3+](https://img.shields.io/badge/R-4.3+-blue.svg)](https://www.r-project.org/) [![ORCID](https://img.shields.io/badge/ORCID-0009--0002--8332--0220-green.svg)](https://orcid.org/0009-0002-8332-0220)
 
 **Author:** Valentine Golden Ghanem | Ghana COCOBOD Cocoa Clinic, Accra, Ghana
 **ORCID:** [0009-0002-8332-0220](https://orcid.org/0009-0002-8332-0220)
@@ -9,7 +9,7 @@
 **Date:** May 2026
 **Status:** Submitted | QA-Conditional pass (12/12 reconciliation, 88% reproducibility)
 
-> Valentine Golden Ghanem (2026). *STI and HIV Syndemic Burden — Geospatial Co-clustering and Behavioural Determinants in Ghana.* GitHub repository. https://github.com/valentineghanem-bit/sti-hiv-syndemic-ghana-260districts
+> Valentine Golden Ghanem (2026). *STI and HIV Syndemic Burden — Geospatial Co-clustering and Behavioural Determinants in Ghana.* GitHub repository. https://github.com/valentineghanem-bit/sti-hiv-syndemic-ghana-261districts
 
 
 ---
@@ -88,7 +88,7 @@ This study quantifies the syndemic co-burden of sexually transmitted infections 
 ## 6. Repository Structure
 
 ```
-sti-hiv-syndemic-ghana-260districts/
+sti-hiv-syndemic-ghana-261districts/
 ├── src/
 │   ├── build_dataset_and_analysis.py
 │   └── generate_figures.py
@@ -122,8 +122,8 @@ sti-hiv-syndemic-ghana-260districts/
 
 ### 7.2 Clone & install
 ```bash
-git clone https://github.com/valentineghanem-bit/sti-hiv-syndemic-ghana-260districts.git
-cd sti-hiv-syndemic-ghana-260districts
+git clone https://github.com/valentineghanem-bit/sti-hiv-syndemic-ghana-261districts.git
+cd sti-hiv-syndemic-ghana-261districts
 pip install -r requirements.txt
 # For R scripts (optional):
 Rscript -e "if (!requireNamespace('renv', quietly=TRUE)) install.packages('renv'); renv::restore()"
@@ -170,8 +170,8 @@ Both the interactive dashboard and the conference poster are committed to the re
 
 | Artefact | View on GitHub | Live preview | Direct download (raw HTML) |
 |----------|----------------|--------------|------------------------------|
-| Interactive dashboard | [`STI_HIV_Syndemic_Dashboard.html`](https://github.com/valentineghanem-bit/sti-hiv-syndemic-ghana-260districts/blob/main/dashboard/STI_HIV_Syndemic_Dashboard.html) | [Open preview](https://htmlpreview.github.io/?https://github.com/valentineghanem-bit/sti-hiv-syndemic-ghana-260districts/blob/main/dashboard/STI_HIV_Syndemic_Dashboard.html) | [Download](https://raw.githubusercontent.com/valentineghanem-bit/sti-hiv-syndemic-ghana-260districts/main/dashboard/STI_HIV_Syndemic_Dashboard.html) |
-| Conference poster | [`STI_HIV_Syndemic_Poster.html`](https://github.com/valentineghanem-bit/sti-hiv-syndemic-ghana-260districts/blob/main/poster/STI_HIV_Syndemic_Poster.html) | [Open preview](https://htmlpreview.github.io/?https://github.com/valentineghanem-bit/sti-hiv-syndemic-ghana-260districts/blob/main/poster/STI_HIV_Syndemic_Poster.html) | [Download](https://raw.githubusercontent.com/valentineghanem-bit/sti-hiv-syndemic-ghana-260districts/main/poster/STI_HIV_Syndemic_Poster.html) |
+| Interactive dashboard | [`STI_HIV_Syndemic_Dashboard.html`](https://github.com/valentineghanem-bit/sti-hiv-syndemic-ghana-261districts/blob/main/dashboard/STI_HIV_Syndemic_Dashboard.html) | [Open preview](https://htmlpreview.github.io/?https://github.com/valentineghanem-bit/sti-hiv-syndemic-ghana-261districts/blob/main/dashboard/STI_HIV_Syndemic_Dashboard.html) | [Download](https://raw.githubusercontent.com/valentineghanem-bit/sti-hiv-syndemic-ghana-261districts/main/dashboard/STI_HIV_Syndemic_Dashboard.html) |
+| Conference poster | [`STI_HIV_Syndemic_Poster.html`](https://github.com/valentineghanem-bit/sti-hiv-syndemic-ghana-261districts/blob/main/poster/STI_HIV_Syndemic_Poster.html) | [Open preview](https://htmlpreview.github.io/?https://github.com/valentineghanem-bit/sti-hiv-syndemic-ghana-261districts/blob/main/poster/STI_HIV_Syndemic_Poster.html) | [Download](https://raw.githubusercontent.com/valentineghanem-bit/sti-hiv-syndemic-ghana-261districts/main/poster/STI_HIV_Syndemic_Poster.html) |
 
 > **Tip:** the dashboard works fully offline once downloaded. The poster is print-ready at A0 (841 × 1189 mm).
 
@@ -193,7 +193,7 @@ Ethical review was waived. This study used exclusively publicly accessible, de-i
 ## 11. Citation
 
 **APA:**
-Ghanem, V. G. (2026). *STI and HIV Syndemic Burden — Geospatial Co-clustering and Behavioural Determinants in Ghana*. GitHub. https://github.com/valentineghanem-bit/sti-hiv-syndemic-ghana-260districts
+Ghanem, V. G. (2026). *STI and HIV Syndemic Burden — Geospatial Co-clustering and Behavioural Determinants in Ghana*. GitHub. https://github.com/valentineghanem-bit/sti-hiv-syndemic-ghana-261districts
 
 **BibTeX:**
 ```bibtex
@@ -201,7 +201,7 @@ Ghanem, V. G. (2026). *STI and HIV Syndemic Burden — Geospatial Co-clustering 
   author = {Ghanem, Valentine Golden},
   title  = {STI and HIV Syndemic Burden — Geospatial Co-clustering and Behavioural Determinants in Ghana},
   year   = {2026},
-  url    = {https://github.com/valentineghanem-bit/sti-hiv-syndemic-ghana-260districts}
+  url    = {https://github.com/valentineghanem-bit/sti-hiv-syndemic-ghana-261districts}
 }
 ```
 
