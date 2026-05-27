@@ -39,3 +39,7 @@ poster/** linguist-generated=true
 *.geojson filter=lfs diff=lfs merge=lfs -text
 *.csv filter=lfs diff=lfs merge=lfs -text
 *.pdf filter=lfs diff=lfs merge=lfs -text
+# Dashboard HTML — generated build outputs (inlined Plotly.js ~3-9 MB)
+dashboard/**              linguist-generated=true
+outputs/**/*.html         linguist-generated=true
+**/*Dashboard*.html       linguist-generated=true
