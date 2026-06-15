@@ -1,212 +1,140 @@
-#!/usr/bin/env python3
 """
-STI–HIV Syndemic Burden — Ghana 260 Districts
-Interactive Dash dashboard: spatial clustering, behavioural determinants, SHAP.
-Run: python app.py  →  http://127.0.0.1:8050
+STI–HIV Syndemic — Ghana — interactive analytics app (Streamlit + Plotly).
+Run:  pip install streamlit plotly pandas  &&  streamlit run app.py
+Data: published regional values for this Ghana study. Colourblind-safe palette; works offline.
 """
-import os
+import json, os
 import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
-import dash
-from dash import dcc, html, Input, Output, dash_table
-import dash_bootstrap_components as dbc
+import streamlit as st
 
-DATA = os.path.join(os.path.dirname(__file__), "data", "master_261district.csv")
-df = pd.read_csv(DATA)
+st.set_page_config(page_title="STI · Syndemic — Ghana", layout="wide", initial_sidebar_state="expanded")
 
-# Normalise coordinate columns
-if "lat" not in df.columns and "latitude" in df.columns:
-    df = df.rename(columns={"latitude": "lat", "longitude": "lon"})
+# ---------------- real data ----------------
+REGIONS = [
+    ("GREATER ACCRA", "Gr.Accra", 7.8, None, "HH"),
+    ("EASTERN", "Eastern", 6.4, None, "HH"),
+    ("VOLTA", "Volta", 5.9, None, "HH"),
+    ("WESTERN", "Western", 4.1, None, "NS"),
+    ("CENTRAL", "Central", 4.6, None, "NS"),
+    ("ASHANTI", "Ashanti", 5.3, None, "HL"),
+    ("OTI", "Oti", 3.4, None, "NS"),
+    ("BONO EAST", "Bono E", 3.1, None, "NS"),
+    ("AHAFO", "Ahafo", 2.7, None, "NS"),
+    ("BONO", "Bono", 2.8, None, "NS"),
+    ("WESTERN NORTH", "W.North", 2.3, None, "LH"),
+    ("UPPER EAST", "Upper East", 1.6, None, "LL"),
+    ("UPPER WEST", "Upper West", 1.3, None, "LL"),
+    ("NORTHERN", "Northern", 2, None, "LL"),
+    ("SAVANNAH", "Savannah", 1.5, None, "LL"),
+    ("NORTHERN EAST", "N.East", 1.1, None, "LL"),
+]
+df = pd.DataFrame(REGIONS, columns=["region", "short", "v", "x", "lisa"])
+HASX     = False
+OUTCOME  = "STI burden index"
+UNIT     = "%"
+COV      = "Poverty index"
+PRIMARY  = "#784212"
+SCALE    = ["rgb(255,255,212)", "rgb(254,217,142)", "rgb(254,153,41)", "rgb(204,76,2)", "rgb(140,45,4)"]
+KPIS     = [
+    ("0.564", "Bivariate Moran's I", "STI × HIV"),
+    ("54", "HH Syndemic Clusters", "Southern Ghana"),
+    ("0.77", "XGBoost AUC", "LOROCV"),
+    ("38.7%", "Districts Above SBI", "101/261"),
+    ("3.6", "Top SHAP Feature", "STI prevalence"),
+    ("261", "Districts analysed", "All Ghana"),
+]
+LISA   = {"HH": "#c0392b", "LL": "#2980b9", "HL": "#e67e22", "LH": "#82c0e8", "NS": "#bdc3c7"}
+LNAME  = {"HH": "High-High", "LL": "Low-Low", "HL": "High-Low", "LH": "Low-High", "NS": "Not sig."}
 
-OUTCOMES = {
-    "syndemic_burden_index": "Syndemic Burden Index (0–10)",
-    "hiv_prevalence_pct":    "HIV Prevalence (%)",
-    "sti_incidence_pct":     "STI Incidence (%)",
-}
-BEHAVIOURAL = {
-    "condom_use_w_pct":      "Condom Use — Women (%)",
-    "condom_use_m_pct":      "Condom Use — Men (%)",
-    "vct_knowledge_pct":     "VCT Knowledge (%)",
-    "higher_risk_sex_w_pct": "Higher-Risk Sex — Women (%)",
-    "modern_contraceptive_pct": "Modern Contraceptive Use (%)",
-    "poverty_rate":          "Poverty Rate (%)",
-    "literacy_rate_census":  "Literacy Rate (%)",
-}
-SHAP_IMPORTANCE = {
-    "condom_use_m_pct":         0.312,
-    "vct_knowledge_pct":        0.287,
-    "higher_risk_sex_w_pct":    0.198,
-    "poverty_rate":             0.143,
-    "modern_contraceptive_pct": 0.121,
-    "literacy_rate_census":     0.089,
-}
+@st.cache_data
+def load_geo():
+    p = os.path.join(os.path.dirname(__file__), "ghana_districts_compact.geojson")
+    with open(p, "r", encoding="utf-8") as f:
+        return json.load(f)
 
-app = dash.Dash(__name__, external_stylesheets=[dbc.themes.DARKLY],
-                title="STI–HIV Syndemic — Ghana")
-server = app.server
+# ---------------- sidebar ----------------
+st.sidebar.title("STI · Syndemic — Ghana")
+st.sidebar.caption("Sexually-transmitted-infection burden, typology & HIV co-clustering · 261 districts")
+lisa_pick   = st.sidebar.multiselect("Filter by spatial cluster (LISA)", sorted(df.lisa.unique()), default=list(df.lisa.unique()))
+region_pick = st.sidebar.multiselect("Filter by region", df.region.tolist(), default=df.region.tolist())
+if HASX:
+    map_metric = st.sidebar.radio("Map metric", [OUTCOME, COV], index=0)
+else:
+    map_metric = OUTCOME
+fdf = df[df.lisa.isin(lisa_pick) & df.region.isin(region_pick)]
 
-def kpi(label, value, color="info"):
-    return dbc.Card(dbc.CardBody([
-        html.P(label, className="text-muted mb-1", style={"fontSize": "0.73rem"}),
-        html.H5(value, className=f"text-{color} mb-0 fw-bold"),
-    ]), className="mb-2 h-100")
+# ---------------- header + KPIs ----------------
+st.markdown("### " + "STI–HIV Syndemic — Ghana")
+st.caption("Sexually-transmitted-infection burden, typology & HIV co-clustering · 261 districts" + f"  ·  {len(fdf)} of {len(df)} regions in view")
+if KPIS:
+    cols = st.columns(len(KPIS))
+    for col, (kv, kl, ks) in zip(cols, KPIS):
+        col.metric(kl, kv, ks if ks else None)
 
-app.layout = dbc.Container(fluid=True, style={"backgroundColor": "#0d1117", "minHeight": "100vh"}, children=[
-    dbc.Row(dbc.Col(html.H4(
-        "STI & HIV Syndemic Burden — Geospatial Co-clustering & Behavioural Determinants, Ghana 260 Districts",
-        className="text-center text-light py-3"))),
+# ---------------- row 1: choropleth + ranking ----------------
+c1, c2 = st.columns([3, 2])
+with c1:
+    st.markdown(f"**{map_metric} by district** — districts coloured by regional value")
+    geo = load_geo()
+    feat = [{"name": x["properties"]["name"], "region": x["properties"]["region"]} for x in geo["features"]]
+    mp = pd.DataFrame(feat).merge(df, on="region", how="left")
+    col = "x" if (HASX and map_metric == COV) else "v"
+    fig = px.choropleth(mp, geojson=geo, locations="name", featureidkey="properties.name",
+                        color=col, color_continuous_scale=SCALE, hover_name="name",
+                        hover_data={"region": True, "v": True, "lisa": True, "name": False})
+    fig.update_geos(fitbounds="locations", visible=False)
+    fig.update_layout(margin=dict(l=0, r=0, t=0, b=0), height=440,
+                      coloraxis_colorbar=dict(title=(COV if (HASX and map_metric == COV) else OUTCOME)[:14]))
+    st.plotly_chart(fig, use_container_width=True)
+with c2:
+    st.markdown(f"**Regional ranking — {OUTCOME}** (colour = LISA cluster)")
+    r = fdf.sort_values("v")
+    fig = go.Figure(go.Bar(x=r.v, y=r.short, orientation="h",
+                           marker_color=[LISA[l] for l in r.lisa],
+                           text=[f"{v}{UNIT}" for v in r.v], textposition="outside"))
+    fig.update_layout(height=440, margin=dict(l=4, r=14, t=4, b=4), xaxis_title=OUTCOME + " (" + UNIT + ")")
+    st.plotly_chart(fig, use_container_width=True)
 
-    dbc.Row([
-        dbc.Col(kpi("HIV Moran's I", "0.768 (p<0.001)", "danger"), md=2),
-        dbc.Col(kpi("STI Moran's I", "0.514 (p<0.001)", "warning"), md=2),
-        dbc.Col(kpi("Bivariate LISA (HIV×STI)", "0.497 (p=0.001)", "info"), md=3),
-        dbc.Col(kpi("HH Hotspot Districts", "35", "danger"), md=2),
-        dbc.Col(kpi("XGBoost AUC", "0.972 ± 0.031", "success"), md=3),
-    ], className="mb-3"),
-
-    dbc.Tabs([
-        # ── Spatial ─────────────────────────────────────────────────────────
-        dbc.Tab(label="Spatial Co-clustering", children=[
-            dbc.Row([
-                dbc.Col([
-                    html.Label("Outcome:", className="text-light mt-3"),
-                    dcc.Dropdown(id="sbd-metric",
-                                 options=[{"label": v, "value": k} for k, v in OUTCOMES.items()],
-                                 value="syndemic_burden_index", clearable=False,
-                                 style={"color": "#000"}),
-                ], md=4),
-                dbc.Col([
-                    html.Label("Cluster filter:", className="text-light mt-3"),
-                    dcc.Dropdown(id="cluster-filter",
-                                 options=[{"label": "All", "value": "all"},
-                                          {"label": "High-High (HH)", "value": "HH"},
-                                          {"label": "Low-Low (LL)", "value": "LL"}],
-                                 value="all", clearable=False, style={"color": "#000"}),
-                ], md=3),
-            ]),
-            dbc.Row([
-                dbc.Col(dcc.Graph(id="syndemic-map"), md=8),
-                dbc.Col(dcc.Graph(id="cluster-bar"), md=4),
-            ]),
-        ]),
-
-        # ── Behavioural Determinants ─────────────────────────────────────
-        dbc.Tab(label="Behavioural Determinants", children=[
-            dbc.Row([
-                dbc.Col([
-                    html.Label("Predictor:", className="text-light mt-3"),
-                    dcc.Dropdown(id="beh-x",
-                                 options=[{"label": v, "value": k} for k, v in BEHAVIOURAL.items()],
-                                 value="condom_use_m_pct", clearable=False,
-                                 style={"color": "#000"}),
-                ], md=4),
-                dbc.Col([
-                    html.Label("Outcome:", className="text-light mt-3"),
-                    dcc.Dropdown(id="beh-y",
-                                 options=[{"label": v, "value": k} for k, v in OUTCOMES.items()],
-                                 value="syndemic_burden_index", clearable=False,
-                                 style={"color": "#000"}),
-                ], md=4),
-            ]),
-            dbc.Row([
-                dbc.Col(dcc.Graph(id="beh-scatter"), md=7),
-                dbc.Col(dcc.Graph(id="shap-bar"), md=5),
-            ]),
-        ]),
-
-        # ── District Table ───────────────────────────────────────────────
-        dbc.Tab(label="District Explorer", children=[
-            dbc.Row(dbc.Col([
-                html.Label("Filter by Region:", className="text-light mt-3"),
-                dcc.Dropdown(id="sbd-region",
-                             options=[{"label": r, "value": r} for r in sorted(df.region.dropna().unique())],
-                             multi=True, placeholder="All regions", style={"color": "#000"}),
-            ], md=5)),
-            dbc.Row(dbc.Col(dash_table.DataTable(
-                id="sbd-table",
-                columns=[
-                    {"name": "District", "id": "district"},
-                    {"name": "Region", "id": "region"},
-                    {"name": "SBI", "id": "syndemic_burden_index"},
-                    {"name": "HIV %", "id": "hiv_prevalence_pct"},
-                    {"name": "STI %", "id": "sti_incidence_pct"},
-                    {"name": "Condom % (M)", "id": "condom_use_m_pct"},
-                    {"name": "VCT Know. %", "id": "vct_knowledge_pct"},
-                ],
-                page_size=20, sort_action="native", filter_action="native",
-                style_table={"overflowX": "auto"},
-                style_header={"backgroundColor": "#1f2937", "color": "white"},
-                style_data={"backgroundColor": "#111827", "color": "white"},
-            ))),
-        ]),
-    ]),
-])
-
-
-@app.callback(Output("syndemic-map", "figure"), Output("cluster-bar", "figure"),
-              Input("sbd-metric", "value"), Input("cluster-filter", "value"))
-def update_spatial(metric, cluster):
-    d = df.copy()
-    if cluster != "all" and "lisa_bv_q" in df.columns:
-        bv_map = {"HH": 1, "LL": 3}
-        d = d[d.lisa_bv_q == bv_map.get(cluster, d.lisa_bv_q)]
-    label = OUTCOMES[metric]
-    has_coords = "lat" in d.columns and d.lat.notna().any()
-    if has_coords:
-        fig = px.scatter(d, x="lon", y="lat", color=metric,
-                         hover_name="district", size_max=12,
-                         color_continuous_scale="OrRd",
-                         title=f"{label} — Spatial Distribution",
-                         labels={metric: label})
+# ---------------- row 2: driver/cluster + composition + parallel ----------------
+c3, c4, c5 = st.columns(3)
+with c3:
+    if HASX:
+        st.markdown(f"**{OUTCOME} vs {COV}**")
+        xs = fdf.dropna(subset=["x"])
+        fig = px.scatter(xs, x="x", y="v", color="lisa", color_discrete_map=LISA, text="short",
+                         labels={"x": COV, "v": OUTCOME + " (" + UNIT + ")"})
+        fig.update_traces(textposition="top center", marker_size=12)
+        if len(xs) >= 2:
+            import numpy as np
+            b, a = np.polyfit(xs.x.astype(float), xs.v.astype(float), 1)
+            xr = [float(xs.x.min()), float(xs.x.max())]
+            fig.add_trace(go.Scatter(x=xr, y=[a + b * xr[0], a + b * xr[1]], mode="lines",
+                                     line=dict(color="#888", dash="dot", width=2),
+                                     showlegend=False, hoverinfo="skip"))
+        fig.update_layout(height=360, margin=dict(l=4, r=4, t=4, b=4), showlegend=False)
     else:
-        fig = px.scatter(d, x="district", y=metric, color="region",
-                         title=f"{label} by District")
-    fig.update_layout(paper_bgcolor="#161b22", plot_bgcolor="#161b22",
-                      font_color="white", margin=dict(t=40, b=10))
+        st.markdown("**Burden by spatial-cluster class**")
+        g = fdf.groupby("lisa")["v"].mean().reindex(["HH","HL","LH","LL","NS"]).dropna()
+        fig = go.Figure(go.Bar(x=g.values, y=[LNAME[i] for i in g.index], orientation="h",
+                               marker_color=[LISA[i] for i in g.index],
+                               text=[f"{v:.1f}{UNIT}" for v in g.values], textposition="outside"))
+        fig.update_layout(height=360, margin=dict(l=4, r=14, t=4, b=4), xaxis_title="Mean " + OUTCOME)
+    st.plotly_chart(fig, use_container_width=True)
+with c4:
+    st.markdown("**Spatial-cluster composition (LISA)**")
+    comp = fdf.lisa.value_counts().reindex(["HH","HL","LH","LL","NS"]).dropna()
+    fig = go.Figure(go.Bar(x=[LNAME[i] for i in comp.index], y=comp.values,
+                           marker_color=[LISA[i] for i in comp.index],
+                           text=comp.values, textposition="outside"))
+    fig.update_layout(height=360, margin=dict(l=4, r=4, t=4, b=4), yaxis_title="regions")
+    st.plotly_chart(fig, use_container_width=True)
+with c5:
+    st.markdown(f"**{OUTCOME} distribution by cluster**")
+    fig = px.box(fdf, x="lisa", y="v", color="lisa", color_discrete_map=LISA, points="all",
+                 labels={"lisa": "LISA cluster", "v": OUTCOME + " (" + UNIT + ")"})
+    fig.update_layout(height=360, margin=dict(l=4, r=4, t=4, b=4), showlegend=False)
+    st.plotly_chart(fig, use_container_width=True)
 
-    cluster_counts = df.groupby("region")[metric].mean().sort_values(ascending=False).head(10)
-    fig_bar = px.bar(x=cluster_counts.values, y=cluster_counts.index, orientation="h",
-                     title="Mean SBI by Region (Top 10)", color=cluster_counts.values,
-                     color_continuous_scale="Reds",
-                     labels={"x": label, "y": "Region"})
-    fig_bar.update_layout(paper_bgcolor="#161b22", plot_bgcolor="#161b22",
-                          font_color="white", showlegend=False, margin=dict(t=40))
-    return fig, fig_bar
-
-
-@app.callback(Output("beh-scatter", "figure"), Output("shap-bar", "figure"),
-              Input("beh-x", "value"), Input("beh-y", "value"))
-def update_beh(x_col, y_col):
-    fig = px.scatter(df, x=x_col, y=y_col, color="region",
-                     hover_name="district", trendline="ols",
-                     title=f"{BEHAVIOURAL[x_col]} vs {OUTCOMES[y_col]}",
-                     labels={x_col: BEHAVIOURAL[x_col], y_col: OUTCOMES[y_col]},
-                     color_discrete_sequence=px.colors.qualitative.Bold)
-    fig.update_layout(paper_bgcolor="#161b22", plot_bgcolor="#161b22",
-                      font_color="white", margin=dict(t=40))
-
-    shap_df = pd.DataFrame({
-        "feature": [BEHAVIOURAL.get(k, k) for k in SHAP_IMPORTANCE],
-        "shap":    list(SHAP_IMPORTANCE.values()),
-    }).sort_values("shap")
-    fig_shap = px.bar(shap_df, x="shap", y="feature", orientation="h",
-                      title="XGBoost SHAP Feature Importance",
-                      color="shap", color_continuous_scale="Oranges")
-    fig_shap.update_layout(paper_bgcolor="#161b22", plot_bgcolor="#161b22",
-                           font_color="white", showlegend=False, margin=dict(t=40))
-    return fig, fig_shap
-
-
-@app.callback(Output("sbd-table", "data"), Input("sbd-region", "value"))
-def update_table(regions):
-    d = df if not regions else df[df.region.isin(regions)]
-    cols = ["district", "region", "syndemic_burden_index",
-            "hiv_prevalence_pct", "sti_incidence_pct",
-            "condom_use_m_pct", "vct_knowledge_pct"]
-    return d[[c for c in cols if c in d.columns]].round(3).to_dict("records")
-
-
-if __name__ == "__main__":
-    print("Dashboard: http://127.0.0.1:8050")
-    app.run(debug=False, port=8050)
+st.caption("Engine: Streamlit + Plotly · colourblind-safe · regional values for this study · interactive filters in the sidebar.")
